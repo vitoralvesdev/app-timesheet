@@ -1,11 +1,11 @@
 import { NativeBaseProvider } from 'native-base'
 import { THEME } from "@/theme";
-import SignIn from "@/screens/signIn";
+import { Routes } from "@/routes";
 
 export default function App() {
   return (
       <NativeBaseProvider theme={THEME}>
-          <SignIn />
-    </NativeBaseProvider>
+          <Routes />
+      </NativeBaseProvider>
   );
 }
