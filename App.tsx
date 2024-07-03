@@ -1,5 +1,5 @@
 import { NativeBaseProvider } from 'native-base'
-import { THEME } from "@/theme";
+import { THEME } from "@/theme/colors";
 import { Routes } from "@/routes";
 
 export default function App() {
