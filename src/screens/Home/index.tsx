@@ -1,9 +1,14 @@
-import { Text, VStack } from "native-base";
+import { Box, useSafeArea } from "native-base";
+import User from "@/components/User";
 
 export default function Home() {
+    const safeAreaProps = useSafeArea({
+        safeAreaTop: true
+    });
+
     return(
-        <VStack flex={1} justifyContent={"center"} alignItems={"center"}>
-            <Text color="gray.100">Home</Text>
-        </VStack>
+        <Box flex={1} m={5} {...safeAreaProps}>
+            <User />
+        </Box>
     )
 }

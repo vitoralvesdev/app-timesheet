@@ -23,11 +23,14 @@ export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
 const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
 
 export function AppRoutes() {
-    const { colors } = useTheme()
+    const { colors} = useTheme()
 
     return (
         <Navigator screenOptions={{
             headerShown: false,
+            cardStyle: {
+              backgroundColor: "red"
+            },
             tabBarActiveTintColor: colors.purple[200],
             tabBarStyle: {
                 paddingTop: spacing.lg,
@@ -37,7 +40,7 @@ export function AppRoutes() {
             tabBarLabelStyle: {
                 paddingTop: spacing.sm,
                 fontSize: spacing.sm
-            }
+            },
         }}>
             <Screen
                 name="Home"
@@ -48,6 +51,7 @@ export function AppRoutes() {
                         focused ? <HomeActiveSvg /> : <HomeSvg />
                     ),
                 }}
+
             />
 
             <Screen
