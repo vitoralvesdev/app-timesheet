@@ -1,5 +1,7 @@
-import { Box, useSafeArea } from "native-base";
-import { User } from "@/components";
+import { Box, HStack, useSafeArea, VStack } from "native-base";
+import { User, Chart, Card } from "@/components";
+import { spacing } from "@/theme";
+import { UploadSvg, DownloadSvg } from "@/svg";
 
 export const Home = () => {
     const safeAreaProps = useSafeArea({
@@ -8,7 +10,29 @@ export const Home = () => {
 
     return(
         <Box flex={1} m={5} {...safeAreaProps}>
-            <User />
+            <VStack style={{ marginBottom: spacing.lg }}>
+                <User />
+            </VStack>
+
+            <VStack style={{ marginBottom: spacing.md }}>
+                <Chart />
+            </VStack>
+
+            <HStack style={{
+                gap: spacing.xs,
+            }}>
+                <Card
+                    icon={<DownloadSvg />}
+                    title="13"
+                    text="OS Abertas"
+                />
+
+                <Card
+                    icon={<UploadSvg />}
+                    title="24"
+                    text="OS Fechadas"
+                />
+            </HStack>
         </Box>
     )
 }

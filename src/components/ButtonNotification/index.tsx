@@ -1,5 +1,4 @@
-import {TouchableOpacity, FlexStyle, ViewStyle } from "react-native";
-import { THEME } from "@/theme";
+import { TouchableOpacity } from "react-native";
 import { NotificationSvg } from "@/svg";
 import {Box} from "native-base";
 

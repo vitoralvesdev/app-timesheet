@@ -10,5 +10,6 @@ export const spacing = {
   xxxl: 64,
   patterns: {
     heading: 18,
+    text: 14,
   }
 }
