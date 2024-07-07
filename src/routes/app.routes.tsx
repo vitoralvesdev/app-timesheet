@@ -1,16 +1,15 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "@/screens/Home";
-import History from "@/screens/History";
-import Os from "@/screens/Os";
-import HomeSvg from "@/svg/HomeSvg"
-import HistorySvg from "@/svg/HistorySvg";
-import OsSvg from "@/svg/OsSvg";
+import { Home, History, Os } from "@/screens";
+import {
+    HomeSvg,
+    HomeActiveSvg,
+    HistorySvg,
+    HistoryActiveSvg,
+    OsSvg,
+    OsActiveSvg
+}  from "@/svg"
 import { useTheme } from "native-base";
 import { spacing } from "@/theme";
-import HomeActiveSvg from "@/svg/HomeActiveSvg";
-import HistoryActiveSvg from "@/svg/HistoryActiveSvg";
-import OsActiveSvg from "@/svg/OsActiveSvg";
-
 
 type AppRoutes = {
     Home: undefined

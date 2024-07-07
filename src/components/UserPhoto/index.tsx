@@ -1,6 +1,6 @@
 import { Image } from "native-base";
 
-export default function UserPhoto(props) {
+export const UserPhoto = (props) => {
     return(
         <Image
             alt='Foto do usuário'

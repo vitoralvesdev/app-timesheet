@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-const OsActiveSvg = (props) => (
+export const OsActiveSvg = (props) => (
     <Svg
         width={20}
         height={18}
@@ -16,4 +16,3 @@ const OsActiveSvg = (props) => (
         />
     </Svg>
 )
-export default OsActiveSvg

@@ -1,7 +1,7 @@
 import { Box, Heading, Text, VStack } from "native-base";
-import Button from "@/components/Button"
+import { Button }  from "@/components"
 
-export default function SignIn() {
+export const SignIn = () => {
     return(
         <VStack flex={1} justifyContent={"center"} alignItems={"center"}>
             <Heading>Olá, Seja bem vindo! 👋</Heading>

@@ -1,24 +1,24 @@
 import {TouchableOpacity, FlexStyle, ViewStyle } from "react-native";
 import { THEME } from "@/theme";
-import NotificationSvg from "@/svg/NotificationSvg";
+import { NotificationSvg } from "@/svg";
+import {Box} from "native-base";
 
-export default function ButtonNotification() {
+export const ButtonNotification = () => {
     return(
-        <TouchableOpacity style={[$container, $border]}>
-            <NotificationSvg />
+        <TouchableOpacity >
+            <Box
+                alignItems="center"
+                borderColor="gray.200"
+                borderWidth={1}
+                borderRadius="full"
+                justifyContent="center"
+                style={{
+                    width: 48,
+                    height: 48,
+                }}
+            >
+                <NotificationSvg />
+            </Box>
         </TouchableOpacity>
     )
-}
-
-const $border: FlexStyle = {
-    borderColor: THEME.colors.gray[200],
-    borderRadius: "50%",
-    borderWidth: 1,
-}
-
-const $container: ViewStyle = {
-    alignItems: "center",
-    justifyContent: "center",
-    height: 48,
-    width: 48,
 }

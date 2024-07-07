@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-const HistorySvg = (props) => (
+export const HistorySvg = (props) => (
     <Svg
         width={22}
         height={22}
@@ -22,4 +22,3 @@ const HistorySvg = (props) => (
         />
     </Svg>
 )
-export default HistorySvg

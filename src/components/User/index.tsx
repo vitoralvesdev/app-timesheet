@@ -1,9 +1,8 @@
 import { Heading, HStack, Text, VStack } from "native-base";
-import UserPhoto from "@/components/UserPhoto";
+import { ButtonNotification, UserPhoto } from "@/components";
 import { spacing } from "@/theme";
-import ButtonNotification from "@/components/ButtonNotification";
 
-export default function User() {
+export const User = () => {
     return(
         <HStack alignItems="center">
             <UserPhoto mr={2} />

@@ -1,0 +1,7 @@
+export * from "./HomeSvg"
+export * from "./HomeActiveSvg"
+export * from "./HistorySvg"
+export * from "./HistoryActiveSvg"
+export * from "./OsSvg"
+export * from "./OsActiveSvg"
+export * from "./NotificationSvg"

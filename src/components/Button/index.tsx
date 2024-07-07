@@ -9,7 +9,7 @@ const rounded: ViewStyle = {
     borderRadius: 5
 }
 
-export default function Button({ text }: props) {
+export const Button = ({ text }: props) => {
     return(
         <ButtonNativeBase
             size="sm"

@@ -33,3 +33,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+/.idea/jsLinters/eslint.xml
+/.idea/prettier.xml
+/.idea/inspectionProfiles/Project_Default.xml

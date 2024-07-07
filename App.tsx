@@ -5,7 +5,6 @@ import { Routes } from "@/routes";
 export default function App() {
   return (
       <NativeBaseProvider theme={THEME}>
-
             <Routes />
       </NativeBaseProvider>
   );

@@ -1,7 +1,7 @@
 import { Box, useSafeArea } from "native-base";
-import User from "@/components/User";
+import { User } from "@/components";
 
-export default function Home() {
+export const Home = () => {
     const safeAreaProps = useSafeArea({
         safeAreaTop: true
     });
