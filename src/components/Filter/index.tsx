@@ -2,7 +2,7 @@ import { HStack, Text } from "native-base";
 import {spacing} from "@/theme";
 import React from "react";
 import { Button } from "@/components";
-import {ArrowDownSvg, HomeSvg} from "@/svg";
+import {ArrowDownSvg} from "@/svg";
 
 export const Filter = () => {
     return(

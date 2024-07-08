@@ -1,5 +1,5 @@
 import { ViewStyle } from "react-native"
-import {Button as ButtonNativeBase, IButtonProps, HStack, Text, useTheme} from "native-base";
+import {Button as ButtonNativeBase, HStack, Text} from "native-base";
 import React from "react";
 import { THEME } from "@/theme";
 

@@ -18,7 +18,7 @@ export const Home = () => {
                 <Filter />
             </VStack>
 
-            <VStack style={{ marginBottom: spacing.md }}>
+            <VStack style={{ marginBottom: spacing.md }} overflow>
                 <Chart />
             </VStack>
 
