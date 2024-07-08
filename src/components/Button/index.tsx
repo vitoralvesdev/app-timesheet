@@ -1,4 +1,4 @@
-import { ViewStyle } from "react-native"
+import {TouchableOpacity, ViewStyle} from "react-native"
 import {Button as ButtonNativeBase, HStack, Text} from "native-base";
 import React from "react";
 import { THEME } from "@/theme";
@@ -17,19 +17,20 @@ export const Button = ({ preset, text, rightIcon }: props) => {
             style={[preset == "filter" ? $filterStyle : $baseStyle]}
             text={text}
         >
-            { preset == "filter" ? (
-                <HStack alignItems="center">
-                    <Text color="gray.300" mr={2}>{text}</Text>
-                    {rightIcon}
-                </HStack>
-            ) : null }
+            <TouchableOpacity>
+                { preset == "filter" ? (
+                    <HStack alignItems="center">
+                        <Text color="gray.300" mr={2}>{text}</Text>
+                        {rightIcon}
+                    </HStack>
+                ) : null }
 
-            { !preset || preset == "default" ? (
-                <HStack alignItems="center">
-                    <Text color="primary.100">{text}</Text>
-                </HStack>
-            ) : null }
-
+                { !preset || preset == "default" ? (
+                    <HStack alignItems="center">
+                        <Text color="primary.100">{text}</Text>
+                    </HStack>
+                ) : null }
+            </TouchableOpacity>
         </ButtonNativeBase>
     )
 }

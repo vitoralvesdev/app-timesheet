@@ -4,7 +4,7 @@ import {Box} from "native-base";
 
 export const ButtonNotification = () => {
     return(
-        <TouchableOpacity >
+        <TouchableOpacity>
             <Box
                 alignItems="center"
                 borderColor="gray.200"

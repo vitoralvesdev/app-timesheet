@@ -1,5 +1,4 @@
 import {Dimensions} from "react-native";
-import {Box} from "native-base";
 import { BarChart,  } from "react-native-gifted-charts";
 import {spacing, THEME} from "@/theme";
 
