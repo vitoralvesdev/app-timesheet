@@ -1,4 +1,5 @@
 export * from "./Card/index"
+export * from "./Filter/index"
 export * from "./Chart/index"
 export * from "./Button/index"
 export * from "./ButtonNotification/index"

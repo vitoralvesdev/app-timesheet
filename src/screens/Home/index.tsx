@@ -1,5 +1,5 @@
 import { Box, HStack, useSafeArea, VStack } from "native-base";
-import { User, Chart, Card } from "@/components";
+import { User, Chart, Card, Filter } from "@/components";
 import { spacing } from "@/theme";
 import { UploadSvg, DownloadSvg } from "@/svg";
 
@@ -15,12 +15,14 @@ export const Home = () => {
             </VStack>
 
             <VStack style={{ marginBottom: spacing.md }}>
+                <Filter />
+            </VStack>
+
+            <VStack style={{ marginBottom: spacing.md }}>
                 <Chart />
             </VStack>
 
-            <HStack style={{
-                gap: spacing.xs,
-            }}>
+            <HStack style={{ gap: spacing.xs }}>
                 <Card
                     icon={<DownloadSvg />}
                     title="13"
