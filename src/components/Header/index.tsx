@@ -1,4 +1,4 @@
-import {Box, Heading, HStack, Text, VStack} from "native-base";
+import {Heading, HStack} from "native-base";
 import {spacing} from "@/theme";
 import React from "react";
 import {ButtonBack} from "@/components/ButtonBack";

@@ -1,7 +1,6 @@
-import {Box, HStack, ScrollView, Text, useSafeArea, View, VStack} from "native-base";
+import {Box, HStack, ScrollView, Text, useSafeArea, VStack} from "native-base";
 import {Button, Header} from "@/components";
 import {spacing} from "@/theme";
-import {Dimensions} from "react-native";
 
 export const Notifications = () => {
     const safeAreaProps = useSafeArea({

@@ -1,5 +1,5 @@
 import { TouchableOpacity } from "react-native";
-import {ArrowBackSvg, NotificationSvg} from "@/svg";
+import {ArrowBackSvg} from "@/svg";
 import {Box} from "native-base";
 
 type props = {
