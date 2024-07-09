@@ -1,5 +1,5 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Home, History, Os } from "@/screens";
+import {Home, History, Os, Notifications} from "@/screens";
 import {
     HomeSvg,
     HomeActiveSvg,
@@ -15,6 +15,7 @@ type AppRoutes = {
     Home: undefined
     History: undefined
     Os: undefined
+    Notifications: undefined
 }
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
@@ -73,6 +74,12 @@ export function AppRoutes() {
                         focused ? <OsActiveSvg /> : <OsSvg />
                     ),
                 }}
+            />
+
+            <Screen
+                name="Notifications"
+                component={Notifications}
+                options={{ tabBarButton: () => null }}
             />
         </Navigator>
     )

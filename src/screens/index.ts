@@ -1,4 +1,5 @@
 export * from "./Home/index"
 export * from "./History/index"
 export * from "./Os/index"
+export * from "./Notifications/index"
 export * from "./SignIn/index"

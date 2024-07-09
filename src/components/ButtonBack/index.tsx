@@ -1,12 +1,12 @@
 import { TouchableOpacity } from "react-native";
-import { NotificationSvg } from "@/svg";
+import {ArrowBackSvg, NotificationSvg} from "@/svg";
 import {Box} from "native-base";
 
 type props = {
     onPress: () => void
 }
 
-export const ButtonNotification = ({ onPress }: props) => {
+export const ButtonBack = ({ onPress }: props) => {
     return(
         <TouchableOpacity onPress={onPress}>
             <Box
@@ -20,7 +20,7 @@ export const ButtonNotification = ({ onPress }: props) => {
                     height: 48,
                 }}
             >
-                <NotificationSvg />
+                <ArrowBackSvg />
             </Box>
         </TouchableOpacity>
     )

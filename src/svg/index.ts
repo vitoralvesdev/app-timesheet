@@ -1,3 +1,4 @@
+export * from "./ArrowBackSvg"
 export * from "./ArrowDownSvg"
 export * from "./HomeSvg"
 export * from "./HomeActiveSvg"
