@@ -1,9 +1,14 @@
-import { Text, VStack } from "native-base";
+import { Box, Text, useSafeArea, VStack } from "native-base";
+import { Agenda } from "@/components";
 
 export const History = () => {
-    return(
-        <VStack flex={1} justifyContent={"center"} alignItems={"center"}>
-            <Text color="gray.100">History</Text>
-        </VStack>
-    )
-}
+  const safeAreaProps = useSafeArea({
+    safeAreaTop: true,
+  });
+
+  return (
+    <Box flex={1} {...safeAreaProps}>
+      <Agenda />
+    </Box>
+  );
+};

@@ -9,7 +9,7 @@ import {
     OsActiveSvg
 }  from "@/svg"
 import { useTheme } from "native-base";
-import { spacing } from "@/theme";
+import {spacing, THEME} from "@/theme";
 
 type AppRoutes = {
     Home: undefined
@@ -31,10 +31,10 @@ export function AppRoutes() {
             cardStyle: {
               backgroundColor: "red"
             },
-            tabBarActiveTintColor: colors.purple[200],
+            tabBarActiveTintColor: THEME.colors.purple[200],
             tabBarStyle: {
                 paddingTop: spacing.lg,
-                borderTopColor:  colors.purple[300],
+                borderTopColor:  THEME.colors.purple[200],
                 borderTopWidth: 1
             },
             tabBarLabelStyle: {
