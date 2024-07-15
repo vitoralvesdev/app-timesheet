@@ -9,7 +9,7 @@ export const Home = () => {
     });
 
     return(
-        <Box flex={1} m={5} {...safeAreaProps}>
+        <Box flex={1} marginX={5} {...safeAreaProps}>
             <VStack style={{ marginBottom: spacing.lg }}>
                 <User />
             </VStack>

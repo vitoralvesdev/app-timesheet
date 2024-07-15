@@ -5,10 +5,11 @@ import {ButtonBack} from "@/components/ButtonBack";
 import {useNavigation} from "@react-navigation/native";
 
 type props = {
-    title: string
+    title: string,
+    renderButtonBack?: () => React.JSX.Element | null
 }
 
-export const Header = ({ title }: props) => {
+export const Header = ({ title, renderButtonBack }: props) => {
     const navigation = useNavigation()
 
     const goBack = () => {
@@ -17,7 +18,10 @@ export const Header = ({ title }: props) => {
 
     return(
         <HStack>
-            <ButtonBack onPress={goBack} />
+            {!renderButtonBack ? (
+                <ButtonBack onPress={goBack} />
+            ) : renderButtonBack()}
+
             <HStack flex={1}  alignItems="center" justifyContent="center">
                 <Heading fontSize={spacing.patterns.heading} color="gray.300">{title}</Heading>
             </HStack>

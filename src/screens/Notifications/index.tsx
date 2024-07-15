@@ -2,6 +2,33 @@ import {Box, HStack, ScrollView, Text, useSafeArea, VStack} from "native-base";
 import {Button, Header} from "@/components";
 import {spacing} from "@/theme";
 
+const DATA = [
+    {
+        title: "",
+        subTitle: "Nova OS aberta para BHUT",
+        hours: "8h",
+        finishButton: false
+    },
+    {
+        title: "OS 123456 - Em andamento",
+        subTitle: "A OS 123456 está em andamento, não deixe de fechar ao finalizar o atendimento",
+        hours: "14h",
+        finishButton: true
+    },
+    {
+        title: "",
+        subTitle: "Nova OS aberta para BHUT",
+        hours: "16h",
+        finishButton: false
+    },
+    {
+        title: "",
+        subTitle: "Nova OS aberta para Bepay",
+        hours: "16h",
+        finishButton: false
+    },
+]
+
 export const Notifications = () => {
     const safeAreaProps = useSafeArea({
         safeAreaTop: true
@@ -9,84 +36,54 @@ export const Notifications = () => {
 
     return(
         <Box flex={1} {...safeAreaProps}>
-            <VStack m={5}  style={{ marginBottom: spacing.md }}>
+            <VStack marginX={5}  style={{ marginBottom: spacing.md }}>
                 <Header title="Notificações" />
             </VStack>
 
             <ScrollView>
-                <HStack
-                    borderBottomWidth={1}
-                    borderBottomColor="purple.300"
-                    paddingY={25}
-                >
-                    <HStack flex={1} marginX={5}>
-                        <Text
-                            flex={1}
-                            color="gray.500"
-                            fontSize={spacing.patterns.text}
-                        >Nova OS aberta para <Text fontWeight="bold">BHUT</Text></Text>
-                        <Text color="gray.100">8h</Text>
-                    </HStack>
-                </HStack>
-
+                { DATA.map(item => (
                 <VStack
                     borderBottomWidth={1}
                     borderBottomColor="purple.300"
-                    paddingY={25}
+
                 >
-                    <HStack marginX={5}>
-                        <Text
-                            flex={1}
-                            color="gray.500"
-                            fontSize={spacing.patterns.text}
-                            fontWeight="bold"
-                            mb={2}
-                        >OS 123456 - Em andamento</Text>
-                        <Text color="gray.100">14h</Text>
-                    </HStack>
+                    <Box marginY={4}>
+                        <HStack marginX={5} >
+                            { item.title ? (
+                                <>
+                                    <Text
+                                        flex={1}
+                                        color="gray.500"
+                                        fontSize={spacing.patterns.text}
+                                        fontWeight="bold"
+                                    >{item.title}</Text>
+                                    <Text color="gray.100">{item.hours}</Text>
+                                </>
+                            ) : null }
+                        </HStack>
 
-                    <VStack marginX={5}>
-                        <Text
-                            color="gray.100"
-                            numberOfLines={2}
-                            mb={3}
-                        >A OS 123456 está em andamento, não deixe de fechar ao finalizar o atendimento</Text>
-                    </VStack>
+                        <VStack marginX={5}>
+                            <HStack marginY={2}>
+                                <Text
+                                    flex={1}
+                                    color="gray.500"
+                                    numberOfLines={2}
+                                >{item.subTitle}</Text>
 
-                    <VStack marginX={5} width={"25%"}>
-                        <Button text="Finalizar" />
-                    </VStack>
+                                { !item.title ? (
+                                    <Text color="gray.100">{item.hours}</Text>
+                                ) : null}
+                            </HStack>
+
+                            { item.finishButton ? (
+                                <VStack  width={"25%"}>
+                                    <Button text="Finalizar" />
+                                </VStack>
+                            ): null }
+                        </VStack>
+                    </Box>
                 </VStack>
-
-                <HStack
-                    borderBottomWidth={1}
-                    borderBottomColor="purple.300"
-                    paddingY={25}
-                >
-                    <HStack flex={1} marginX={5}>
-                        <Text
-                            flex={1}
-                            color="gray.500"
-                            fontSize={spacing.patterns.text}
-                        >Nova OS aberta para <Text fontWeight="bold">BHUT</Text></Text>
-                        <Text color="gray.100">16h</Text>
-                    </HStack>
-                </HStack>
-
-                <HStack
-                    borderBottomWidth={1}
-                    borderBottomColor="purple.300"
-                    paddingY={25}
-                >
-                    <HStack flex={1} marginX={5}>
-                        <Text
-                            flex={1}
-                            color="gray.500"
-                            fontSize={spacing.patterns.text}
-                        >Nova OS aberta para <Text fontWeight="bold">Bepay</Text></Text>
-                        <Text color="gray.100">16h</Text>
-                    </HStack>
-                </HStack>
+                ))}
             </ScrollView>
         </Box>
     )

@@ -15,68 +15,14 @@ import { spacing, THEME } from "@/theme";
 import { Box, Heading, HStack, Text, VStack } from "native-base";
 import { ViewStyle } from "react-native";
 import {dateToText} from "@/helpers/formatDate";
+import {SectionListData} from "react-native/Libraries/Lists/SectionList";
 
-type props = {};
 
-export const Agenda = ({}: props) => {
-  const DATA = [
-    {
-      title: "2024-07-09",
-      data: [
-        {
-          name: "BHUT",
-          hours: "08:00 - 12:00",
-        },
-        {
-          name: "Bepay",
-          hours: "15:30 - 17:00",
-        },
-        {
-          name: "Ambev",
-          hours: "17:30 -18:00",
-        },
-      ],
-    },
-    {
-      title: "2024-07-10",
-      data: [
-        {
-          name: "Bepay",
-          hours: "15:30 - 17:00",
-        },
-        {
-          name: "Ambev",
-          hours: "17:30 -18:00",
-        },
-      ],
-    },
-    {
-      title: "2024-07-11",
-      data: [
-        {
-          name: "Bepay",
-          hours: "15:30 - 17:00",
-        },
-        {
-          name: "Ambev",
-          hours: "17:30 -18:00",
-        },
-      ],
-    },
-    {
-      title: "2024-07-12",
-      data: [
-        {
-          name: "Bepay",
-          hours: "15:30 - 17:00",
-        },
-        {
-          name: "Ambev",
-          hours: "17:30 -18:00",
-        },
-      ],
-    },
-  ];
+type props = {
+  data: ReadonlyArray<SectionListData<any, any>>
+};
+
+export const Agenda = ({ data }: props) => {
   const [selectedDay, setSelectedDay] = useState<string>(new Date().toString());
 
   LocaleConfig.locales.pt = {
@@ -138,7 +84,7 @@ export const Agenda = ({}: props) => {
         }}
       />
       <AgendaList
-        sections={DATA}
+        sections={data}
         renderSectionHeader={(item) => renderSectionHeader(item as string)}
         renderItem={(item) => renderItem(item)}
       />
