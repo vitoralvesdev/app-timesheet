@@ -26,5 +26,6 @@ export const THEME = extendTheme({
       500: "#9579A0",
       600: "#523E5B",
     },
+    transparent: "rgba(0, 0, 0, 0)",
   },
 });

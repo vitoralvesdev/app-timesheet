@@ -8,8 +8,9 @@ import {
     OsSvg,
     OsActiveSvg
 }  from "@/svg"
-import { useTheme } from "native-base";
 import {spacing, THEME} from "@/theme";
+import {ViewStyle} from "react-native";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 type AppRoutes = {
     Home: undefined
@@ -23,24 +24,22 @@ export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
 const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
 
 export function AppRoutes() {
-    const { colors} = useTheme()
+    const { bottom } = useSafeAreaInsets()
 
     return (
         <Navigator screenOptions={{
             headerShown: false,
-            cardStyle: {
-              backgroundColor: "red"
-            },
             tabBarActiveTintColor: THEME.colors.purple[200],
-            tabBarStyle: {
-                paddingTop: spacing.lg,
-                borderTopColor:  THEME.colors.purple[200],
-                borderTopWidth: 1
+            style: {
+              paddingVertical: spacing.lg,
             },
-            tabBarLabelStyle: {
-                paddingTop: spacing.sm,
-                fontSize: spacing.sm
-            },
+            tabBarStyle: [$tabBar, { height: bottom + 60 }],
+            tabBarItemStyle: $tabBarItem,
+            // tabBarLabelStyle: {
+            //     // paddingBottom: spacing.lg,
+            //     fontSize: spacing.sm,
+            //     // backgroundColor: "red"
+            // },
         }}>
             <Screen
                 name="Home"
@@ -83,4 +82,15 @@ export function AppRoutes() {
             />
         </Navigator>
     )
+}
+
+const $tabBar: ViewStyle = {
+    borderTopColor:  THEME.colors.purple[200],
+    borderTopWidth: 1,
+    shadowColor: THEME.colors.transparent,
+}
+
+const $tabBarItem: ViewStyle = {
+    paddingTop: spacing.xxs,
+    paddingBottom: spacing.xs,
 }

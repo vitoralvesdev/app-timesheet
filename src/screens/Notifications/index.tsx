@@ -1,6 +1,7 @@
 import {Box, HStack, ScrollView, Text, useSafeArea, VStack} from "native-base";
 import {Button, Header} from "@/components";
 import {spacing} from "@/theme";
+import {TouchableOpacity} from "react-native";
 
 const DATA = [
     {
@@ -36,53 +37,56 @@ export const Notifications = () => {
 
     return(
         <Box flex={1} {...safeAreaProps}>
-            <VStack marginX={5}  style={{ marginBottom: spacing.md }}>
+            <VStack margin={5}  style={{ marginBottom: spacing.md }}>
                 <Header title="Notificações" />
             </VStack>
 
             <ScrollView>
                 { DATA.map((item, index) => (
-                <VStack
-                    borderBottomWidth={1}
-                    borderBottomColor="purple.300"
+                <TouchableOpacity
                     key={index}
                 >
-                    <Box marginY={4}>
-                        <HStack marginX={5} >
-                            { item.title ? (
-                                <>
+                    <VStack
+                        borderBottomWidth={1}
+                        borderBottomColor="purple.300"
+                    >
+                        <Box marginY={4}>
+                            <HStack marginX={5} >
+                                { item.title ? (
+                                    <>
+                                        <Text
+                                            flex={1}
+                                            color="gray.500"
+                                            fontSize={spacing.patterns.text}
+                                            fontWeight="bold"
+                                        >{item.title}</Text>
+                                        <Text color="gray.100">{item.hours}</Text>
+                                    </>
+                                ) : null }
+                            </HStack>
+
+                            <VStack marginX={5}>
+                                <HStack marginY={2}>
                                     <Text
                                         flex={1}
                                         color="gray.500"
-                                        fontSize={spacing.patterns.text}
-                                        fontWeight="bold"
-                                    >{item.title}</Text>
-                                    <Text color="gray.100">{item.hours}</Text>
-                                </>
-                            ) : null }
-                        </HStack>
+                                        numberOfLines={2}
+                                    >{item.subTitle}</Text>
 
-                        <VStack marginX={5}>
-                            <HStack marginY={2}>
-                                <Text
-                                    flex={1}
-                                    color="gray.500"
-                                    numberOfLines={2}
-                                >{item.subTitle}</Text>
+                                    { !item.title ? (
+                                        <Text color="gray.100">{item.hours}</Text>
+                                    ) : null}
+                                </HStack>
 
-                                { !item.title ? (
-                                    <Text color="gray.100">{item.hours}</Text>
-                                ) : null}
-                            </HStack>
-
-                            { item.finishButton ? (
-                                <VStack  width={"25%"}>
-                                    <Button text="Finalizar" />
-                                </VStack>
-                            ): null }
-                        </VStack>
-                    </Box>
-                </VStack>
+                                { item.finishButton ? (
+                                    <VStack  width={"25%"}>
+                                        <Button text="Finalizar" />
+                                    </VStack>
+                                ): null }
+                            </VStack>
+                        </Box>
+                    </VStack>
+                </TouchableOpacity>
                 ))}
             </ScrollView>
         </Box>

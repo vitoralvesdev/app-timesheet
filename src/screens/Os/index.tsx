@@ -91,7 +91,7 @@ export const Os = () => {
 
     return(
         <VStack flex={1} {...safeAreaProps}>
-            <VStack marginX={5}  style={{ marginBottom: spacing.md }}>
+            <VStack margin={5}  style={{ marginBottom: spacing.md }}>
                 <Header
                     title="OS"
                     renderButtonBack={() => null}
