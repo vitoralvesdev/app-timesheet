@@ -1,5 +1,5 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {Home, History, Os, Notifications} from "@/screens";
+import {Home, History, Os, OsDetails, Notifications} from "@/screens";
 import {
     HomeSvg,
     HomeActiveSvg,
@@ -78,6 +78,12 @@ export function AppRoutes() {
             <Screen
                 name="Notifications"
                 component={Notifications}
+                options={{ tabBarButton: () => null }}
+            />
+
+            <Screen
+                name="OsDetails"
+                component={OsDetails}
                 options={{ tabBarButton: () => null }}
             />
         </Navigator>
