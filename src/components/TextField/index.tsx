@@ -8,9 +8,10 @@ type props = {
     placeholder?: string
     value?: string | undefined
     onChange?: (value: string) => void
+    numberOfLines?: number
 }
 
-export const TextField = ({ leftIcon, placeholder, value, onChange }: props) => {
+export const TextField = ({ leftIcon, placeholder, value, onChange, numberOfLines }: props) => {
     return(
         <Input
            value={value}
@@ -31,6 +32,9 @@ export const TextField = ({ leftIcon, placeholder, value, onChange }: props) => 
                 </Box>
             }
            onChangeText={onChange}
+           multiline={!!numberOfLines}
+           numberOfLines={numberOfLines}
+           height={numberOfLines ? 132 : null}
         />
     )
 }

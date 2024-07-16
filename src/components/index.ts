@@ -5,6 +5,7 @@ import { ButtonNotification } from "./ButtonNotification/index";
 import { Card } from "./Card/index";
 import { Chart } from "./Chart/index";
 import { Chip } from "./Chip/index";
+import { Clock } from "./Clock/index";
 import { Filter } from "./Filter/index";
 import { Header } from "./Header/index";
 import { User } from "./User/index";
@@ -20,6 +21,7 @@ export {
     Card,
     Chart,
     Chip,
+    Clock,
     Filter,
     Header,
     User,

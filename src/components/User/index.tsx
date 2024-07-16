@@ -3,7 +3,7 @@ import { ButtonNotification } from "../ButtonNotification";
 import { UserPhoto } from "../UserPhoto";
 import { spacing } from "@/theme";
 import {useNavigation} from "@react-navigation/native";
-import {AppNavigatorRoutesProps} from "@/routes/app.routes";
+import {AppNavigatorRoutesProps} from "@/navigators/app.routes";
 
 
 export const User = () => {

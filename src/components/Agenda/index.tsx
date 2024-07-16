@@ -16,6 +16,8 @@ import { Box, Heading, HStack, Text, VStack } from "native-base";
 import { ViewStyle } from "react-native";
 import {dateToText} from "@/helpers/formatDate";
 import {SectionListData} from "react-native/Libraries/Lists/SectionList";
+import {useNavigation} from "@react-navigation/native";
+import {AppNavigatorRoutesProps} from "@/navigators/app.routes";
 
 
 type props = {
@@ -23,6 +25,8 @@ type props = {
 };
 
 export const Agenda = ({ data }: props) => {
+  const navigation = useNavigation<AppNavigatorRoutesProps>()
+
   const [selectedDay, setSelectedDay] = useState<string>(new Date().toString());
 
   LocaleConfig.locales.pt = {
@@ -34,6 +38,10 @@ export const Agenda = ({ data }: props) => {
   };
 
   LocaleConfig.defaultLocale = "pt";
+
+  const goOsDetails = () => {
+      navigation.navigate('OsDetails')
+  }
 
   const renderKnob = () => {
     return <Box marginY={3} w={16} h={0.5} backgroundColor="purple.200" />;
@@ -82,6 +90,7 @@ export const Agenda = ({ data }: props) => {
           selectedDotColor: THEME.colors.gray[600],
           agendaKnobColor: THEME.colors.purple[200],
         }}
+        onDayPress={goOsDetails}
       />
       <AgendaList
         sections={data}

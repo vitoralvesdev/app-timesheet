@@ -1,5 +1,8 @@
-export * from "./Home/index"
-export * from "./History/index"
-export * from "./Os/index"
-export * from "./Notifications/index"
-export * from "./SignIn/index"
+import {Home} from "./Home/index"
+import {History} from "./History/index"
+import {Os} from "./Os/index"
+import {OsDetails} from "./OsDetails/index"
+import {Notifications} from "./Notifications/index"
+import {SignIn} from "./SignIn/index"
+
+export { Home, History, Os, OsDetails, Notifications, SignIn }

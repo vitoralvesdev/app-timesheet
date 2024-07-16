@@ -1,7 +1,7 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { THEME } from "@/theme";
 import { AppRoutes } from "./app.routes";
-import {AuthRoutes} from "@/routes/auth.routes";
+import {AuthRoutes} from "@/navigators/auth.routes";
 
 const _THEME = {
     ...DefaultTheme,

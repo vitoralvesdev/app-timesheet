@@ -2,20 +2,23 @@ import {TouchableOpacity, ViewStyle} from "react-native"
 import {Button as ButtonNativeBase, HStack, Text} from "native-base";
 import React from "react";
 import { THEME } from "@/theme";
+import {TouchableOpacityProps} from "react-native-gesture-handler";
 
 type props = {
     text: string,
     preset?: "default" | "filter",
     rightIcon?: React.JSX.Element,
+    onPress?: TouchableOpacityProps["onPress"]
 }
 
-export const Button = ({ preset, text, rightIcon }: props) => {
+export const Button = ({ preset, text, rightIcon, onPress }: props) => {
     return(
         <ButtonNativeBase
             size="sm"
             variant="outline"
             style={[preset == "filter" ? $filterStyle : $baseStyle]}
             text={text}
+            onPress={onPress}
         >
             <TouchableOpacity>
                 { preset == "filter" ? (
