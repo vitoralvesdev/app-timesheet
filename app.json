@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "app-timesheet",
-    "slug": "app-timesheet",
+    "slug": "apptimesheet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,6 +26,12 @@
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "089ef82d-89d9-4938-95ed-925596816cec"
+      }
+    },
+    "owner": "vitoralvesdev"
   }
 }
