@@ -41,11 +41,11 @@ export const Notifications = () => {
             </VStack>
 
             <ScrollView>
-                { DATA.map(item => (
+                { DATA.map((item, index) => (
                 <VStack
                     borderBottomWidth={1}
                     borderBottomColor="purple.300"
-
+                    key={index}
                 >
                     <Box marginY={4}>
                         <HStack marginX={5} >

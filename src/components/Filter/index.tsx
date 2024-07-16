@@ -1,7 +1,7 @@
 import { HStack, Text } from "native-base";
 import {spacing} from "@/theme";
 import React from "react";
-import { Button } from "@/components";
+import { Button } from "../Button";
 import {ArrowDownSvg} from "@/svg";
 
 export const Filter = () => {

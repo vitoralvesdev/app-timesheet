@@ -1,5 +1,6 @@
 import { Heading, HStack, Text, VStack } from "native-base";
-import { ButtonNotification, UserPhoto } from "@/components";
+import { ButtonNotification } from "../ButtonNotification";
+import { UserPhoto } from "../UserPhoto";
 import { spacing } from "@/theme";
 import {useNavigation} from "@react-navigation/native";
 import {AppNavigatorRoutesProps} from "@/routes/app.routes";
