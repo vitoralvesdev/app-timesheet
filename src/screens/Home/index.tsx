@@ -1,5 +1,5 @@
 import { Box, HStack, useSafeArea, VStack } from "native-base";
-import { User, Chart, Card, Filter } from "@/components";
+import {User, Chart, Card, Filter} from "@/components";
 import { spacing } from "@/theme";
 import { UploadSvg, DownloadSvg } from "@/svg";
 

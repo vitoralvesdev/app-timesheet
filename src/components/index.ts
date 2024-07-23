@@ -6,6 +6,7 @@ import { Card } from "./Card/index";
 import { Chart } from "./Chart/index";
 import { Chip } from "./Chip/index";
 import { Clock } from "./Clock/index";
+import { CustomModal } from "./CustomModal/index";
 import { Filter } from "./Filter/index";
 import { Header } from "./Header/index";
 import { User } from "./User/index";
@@ -22,6 +23,7 @@ export {
     Chart,
     Chip,
     Clock,
+    CustomModal,
     Filter,
     Header,
     User,
