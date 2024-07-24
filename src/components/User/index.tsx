@@ -1,5 +1,5 @@
 import { Heading, HStack, Text, VStack } from "native-base";
-import { ButtonNotification } from "../ButtonNotification";
+import { ButtonNotification } from "../Buttons/ButtonNotification";
 import { UserPhoto } from "../UserPhoto";
 import { spacing } from "@/theme";
 import {useNavigation} from "@react-navigation/native";

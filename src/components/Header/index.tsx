@@ -1,7 +1,7 @@
 import {Heading, HStack} from "native-base";
 import {spacing} from "@/theme";
 import React from "react";
-import {ButtonBack} from "@/components/ButtonBack";
+import {ButtonBack} from "src/components/Buttons/ButtonBack";
 import {useNavigation} from "@react-navigation/native";
 
 type props = {

@@ -1,12 +1,14 @@
 import { Agenda } from "./Agenda/index"
-import { Button } from "./Button/index";
-import { ButtonBack } from "./ButtonBack/index";
-import { ButtonNotification } from "./ButtonNotification/index";
+import { Button } from "@/components/Buttons/Button";
+import { ButtonBack } from "@/components/Buttons/ButtonBack";
+import { ButtonNotification } from "@/components/Buttons/ButtonNotification";
+import { ButtonClose } from "@/components/Buttons/ButtonClose";
 import { Card } from "./Card/index";
 import { Chart } from "./Chart/index";
 import { Chip } from "./Chip/index";
 import { Clock } from "./Clock/index";
-import { CustomModal } from "./CustomModal/index";
+import { CustomModal } from "@/components/Modals/CustomModal";
+import { HomeModal } from "@/components/Modals/HomeModal";
 import { Filter } from "./Filter/index";
 import { Header } from "./Header/index";
 import { User } from "./User/index";
@@ -19,11 +21,13 @@ export {
     Button,
     ButtonBack,
     ButtonNotification,
+    ButtonClose,
     Card,
     Chart,
     Chip,
     Clock,
     CustomModal,
+    HomeModal,
     Filter,
     Header,
     User,

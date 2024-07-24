@@ -30,5 +30,6 @@ export const THEME = extendTheme({
       100: "#FF3838"
     },
     transparent: "rgba(0, 0, 0, 0)",
+    linearGradientBg: ["#56415D", "#170D30"],
   },
 });

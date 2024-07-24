@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Icon, Text} from "native-base";
+import {Text} from "native-base";
 import {spacing, THEME} from "@/theme";
 import {Modal, ModalProps, TextStyle, TouchableOpacityProps, View, ViewStyle} from "react-native";
 import {Button} from "@/components";
