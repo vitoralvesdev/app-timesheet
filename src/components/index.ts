@@ -1,4 +1,4 @@
-import { Agenda } from "./Agenda/index"
+import { Agenda } from "./Agenda/index";
 import { Button } from "@/components/Buttons/Button";
 import { ButtonBack } from "@/components/Buttons/ButtonBack";
 import { ButtonNotification } from "@/components/Buttons/ButtonNotification";
@@ -17,21 +17,21 @@ import { TextField } from "./TextField/index";
 import { ToggleGroup } from "./ToggleGroup/index";
 
 export {
-    Agenda,
-    Button,
-    ButtonBack,
-    ButtonNotification,
-    ButtonClose,
-    Card,
-    Chart,
-    Chip,
-    Clock,
-    CustomModal,
-    HomeModal,
-    Filter,
-    Header,
-    User,
-    UserPhoto,
-    TextField,
-    ToggleGroup
+  Agenda,
+  Button,
+  ButtonBack,
+  ButtonNotification,
+  ButtonClose,
+  Card,
+  Chart,
+  Chip,
+  Clock,
+  CustomModal,
+  HomeModal,
+  Filter,
+  Header,
+  User,
+  UserPhoto,
+  TextField,
+  ToggleGroup,
 };

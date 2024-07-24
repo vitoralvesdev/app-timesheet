@@ -12,22 +12,21 @@ import {
   LocaleConfig,
 } from "react-native-calendars";
 import { spacing, THEME } from "@/theme";
-import { Box, Heading, HStack, Text, VStack } from "native-base";
+import { Heading, HStack, Text, VStack } from "native-base";
 import { ViewStyle } from "react-native";
-import {dateToText} from "@/helpers/formatDate";
-import {SectionListData} from "react-native/Libraries/Lists/SectionList";
-import {useNavigation} from "@react-navigation/native";
-import {AppNavigatorRoutesProps} from "@/navigators/app.routes";
-
+import { dateToText } from "@/helpers/formatDate";
+import { SectionListData } from "react-native/Libraries/Lists/SectionList";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
 
 type props = {
-  data: ReadonlyArray<SectionListData<any, any>>
+  data: readonly SectionListData<any, any>[];
 };
 
 export const Agenda = ({ data }: props) => {
-  const navigation = useNavigation<AppNavigatorRoutesProps>()
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
 
-  const [selectedDay, setSelectedDay] = useState<string>(new Date().toString());
+  const [selectedDay] = useState<string>(new Date().toString());
 
   LocaleConfig.locales.pt = {
     monthNames: getMonthNames(),
@@ -40,11 +39,7 @@ export const Agenda = ({ data }: props) => {
   LocaleConfig.defaultLocale = "pt";
 
   const goOsDetails = () => {
-      navigation.navigate('OsDetails')
-  }
-
-  const renderKnob = () => {
-    return <Box marginY={3} w={16} h={0.5} backgroundColor="purple.200" />;
+    navigation.navigate("OsDetails");
   };
 
   const renderSectionHeader = (date: string) => {
@@ -104,7 +99,7 @@ export const Agenda = ({ data }: props) => {
 const $borderStyle: ViewStyle = {
   borderBottomWidth: 1,
   borderColor: THEME.colors.gray[700],
-}
+};
 
 const $headerStyle: ViewStyle = {
   backgroundColor: THEME.colors.primary[200],

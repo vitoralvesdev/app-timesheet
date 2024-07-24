@@ -1,15 +1,15 @@
 import { Box, useSafeArea } from "native-base";
-import {Agenda} from "@/components";
+import { Agenda } from "@/components";
 
 type HistoryDataProps = {
-  name: string,
-  hours: string,
-}
+  name: string;
+  hours: string;
+};
 
 type HistoryProps = {
-  title: string,
-  data: HistoryDataProps[],
-}
+  title: string;
+  data: HistoryDataProps[];
+};
 
 const DATA: HistoryProps[] = [
   {
@@ -77,9 +77,7 @@ export const History = () => {
 
   return (
     <Box flex={1} {...safeAreaProps}>
-      <Agenda
-        data={DATA}
-      />
+      <Agenda data={DATA} />
     </Box>
   );
 };

@@ -1,23 +1,23 @@
-import { NativeBaseProvider } from 'native-base'
+import { NativeBaseProvider } from "native-base";
 import { THEME } from "@/theme/colors";
 import { Routes } from "src/navigators";
-import * as SplashScreen from 'expo-splash-screen';
-import {useEffect} from "react";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
 
-SplashScreen.preventAutoHideAsync()
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-    useEffect(() => {
-        closeSplash().then()
-    })
+  useEffect(() => {
+    closeSplash().then();
+  });
 
-    const closeSplash = async () => {
-        await SplashScreen.hideAsync()
-    }
+  const closeSplash = async () => {
+    await SplashScreen.hideAsync();
+  };
 
   return (
-      <NativeBaseProvider theme={THEME}>
-            <Routes />
-      </NativeBaseProvider>
+    <NativeBaseProvider theme={THEME}>
+      <Routes />
+    </NativeBaseProvider>
   );
 }

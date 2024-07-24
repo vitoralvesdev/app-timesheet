@@ -11,5 +11,5 @@ export const spacing = {
   patterns: {
     heading: 18,
     text: 14,
-  }
-}
+  },
+};
