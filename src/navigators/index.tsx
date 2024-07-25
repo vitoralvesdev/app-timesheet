@@ -1,7 +1,9 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { THEME } from "@/theme";
 import { AppRoutes } from "./app.routes";
-import { AuthRoutes } from "@/navigators/auth.routes";
+import { AuthRoutes } from "./auth.routes";
+import { useStores } from "@/models";
+import { observer } from "mobx-react-lite";
 
 const _THEME = {
   ...DefaultTheme,
@@ -11,10 +13,18 @@ const _THEME = {
   },
 };
 
-export function Routes() {
+const Routes = observer(() => {
+  const {
+    authenticationStore: { isAuthenticated },
+  } = useStores();
+
+  console.log("is logged?", isAuthenticated);
+
   return (
     <NavigationContainer theme={_THEME}>
-      <AppRoutes />
+      {isAuthenticated ? <AppRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   );
-}
+});
+
+export { Routes };

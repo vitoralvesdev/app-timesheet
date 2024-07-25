@@ -1,7 +1,7 @@
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
-} from "react-native-screens/native-stack";
+} from "@react-navigation/native-stack";
 import { SignIn } from "src/screens";
 
 type AuthRoutes = {
