@@ -7,6 +7,7 @@ export const THEME = extendTheme({
       200: "#FFFFFF",
       300: "rgba(0,0,0,0.4)",
       400: "#ECF1F6",
+      500: "#000000",
     },
     gray: {
       100: "#78828A",
@@ -25,6 +26,7 @@ export const THEME = extendTheme({
       400: "#EBDBF0",
       500: "#9579A0",
       600: "#523E5B",
+      700: "#543B58",
     },
     error: {
       100: "#FF3838",

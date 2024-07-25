@@ -8,7 +8,7 @@ import Svg, {
   Stop,
 } from "react-native-svg";
 
-export const BackgroundCircleSvg = (props) => (
+export const BackgroundCircleHomeSvg = (props) => (
   <Svg width={375} height={812} fill="none" {...props}>
     <Path
       fill="url(#a)"

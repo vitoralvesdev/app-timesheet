@@ -14,10 +14,6 @@ export default function App() {
 
   const configGoogleSignIn = () => {
     GoogleSignin.configure({
-      // scopes: ["https://www.googleapis.com/auth/drive"],
-      // offlineAccess: true,
-      // forceCodeForRefreshToken: true,
-      // profileImageSize: 120,
       webClientId:
         "265481946936-qjrodv33qovkqihu0c4vduvhplcb9sbf.apps.googleusercontent.com",
     });

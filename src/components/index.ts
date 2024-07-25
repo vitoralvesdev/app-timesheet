@@ -1,6 +1,7 @@
 import { Agenda } from "./Agenda/index";
 import { Button } from "@/components/Buttons/Button";
 import { ButtonBack } from "@/components/Buttons/ButtonBack";
+import { ButtonLogout } from "@/components/Buttons/ButtonLogout";
 import { ButtonNotification } from "@/components/Buttons/ButtonNotification";
 import { ButtonClose } from "@/components/Buttons/ButtonClose";
 import { Card } from "./Card/index";
@@ -20,6 +21,7 @@ export {
   Agenda,
   Button,
   ButtonBack,
+  ButtonLogout,
   ButtonNotification,
   ButtonClose,
   Card,

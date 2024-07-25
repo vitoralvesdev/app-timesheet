@@ -11,7 +11,7 @@ import { Box, Text } from "native-base";
 import { spacing, THEME } from "@/theme";
 import PagerView from "react-native-pager-view";
 import { LinearGradient } from "expo-linear-gradient";
-import { BackgroundCircleSvg, ManSvg } from "@/svg";
+import { BackgroundCircleHomeSvg, ManSvg } from "@/svg";
 import { ButtonClose } from "@/components";
 
 export interface HomeModalProps extends ModalProps {
@@ -30,7 +30,7 @@ export const HomeModal = (props: HomeModalProps) => {
     return (
       <>
         <Box position="absolute" bottom={0} zIndex={-99}>
-          <BackgroundCircleSvg />
+          <BackgroundCircleHomeSvg />
         </Box>
 
         <Box position="absolute" left={5} bottom={0} zIndex={-99}>

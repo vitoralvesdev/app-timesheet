@@ -1,19 +1,31 @@
 import { Heading, HStack, Text, VStack } from "native-base";
-import { ButtonNotification } from "../Buttons/ButtonNotification";
+import { ButtonLogout, ButtonNotification } from "@/components";
 import { UserPhoto } from "../UserPhoto";
 import { spacing } from "@/theme";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
 import { useStores } from "@/models";
+import { observer } from "mobx-react-lite";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
-export const User = () => {
+export const User = observer(() => {
   const navigation = useNavigation<AppNavigatorRoutesProps>();
   const {
-    authenticationStore: { isName, isPhoto },
+    authenticationStore: { isName, isPhoto, logout },
   } = useStores();
 
   const goNotifications = () => {
     navigation.navigate("Notifications");
+  };
+
+  const onLogout = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signOut();
+      await logout();
+    } catch (error) {
+      console.error("Erro ao deslogar", error);
+    }
   };
 
   return (
@@ -25,7 +37,13 @@ export const User = () => {
         </Text>
         <Heading fontSize={spacing.patterns.heading}>{isName}</Heading>
       </VStack>
-      <ButtonNotification onPress={goNotifications} />
+      <VStack marginX={4}>
+        <ButtonNotification onPress={goNotifications} />
+      </VStack>
+
+      <VStack>
+        <ButtonLogout onPress={onLogout} />
+      </VStack>
     </HStack>
   );
-};
+});

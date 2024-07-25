@@ -1,7 +1,10 @@
 import { ArrowBackSvg } from "./ArrowBackSvg";
 import { ArrowDownSvg } from "./ArrowDownSvg";
-import { BackgroundCircleSvg } from "./BackgroundCircleSvg";
+import { BackgroundCircleHomeSvg } from "./BackgroundCircleHomeSvg";
+import { BackgroundCircleLoginSvg } from "./BackgroundCircleLoginSvg";
+import { BackgroundCircleLoginTwoSvg } from "./BackgroundCircleLoginTwoSvg";
 import { ErrorSvg } from "./ErrorSvg";
+import { GoogleSvg } from "./GoogleSvg";
 import { HomeSvg } from "./HomeSvg";
 import { HomeActiveSvg } from "./HomeActiveSvg";
 import { HistorySvg } from "./HistorySvg";
@@ -18,8 +21,11 @@ import { DownloadSvg } from "./DownloadSvg";
 export {
   ArrowBackSvg,
   ArrowDownSvg,
-  BackgroundCircleSvg,
+  BackgroundCircleHomeSvg,
+  BackgroundCircleLoginSvg,
+  BackgroundCircleLoginTwoSvg,
   ErrorSvg,
+  GoogleSvg,
   HomeSvg,
   HomeActiveSvg,
   HistorySvg,
