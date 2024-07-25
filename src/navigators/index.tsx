@@ -18,8 +18,6 @@ const Routes = observer(() => {
     authenticationStore: { isAuthenticated },
   } = useStores();
 
-  console.log("is logged?", isAuthenticated);
-
   return (
     <NavigationContainer theme={_THEME}>
       {isAuthenticated ? <AppRoutes /> : <AuthRoutes />}

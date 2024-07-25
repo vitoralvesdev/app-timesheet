@@ -4,9 +4,13 @@ import { UserPhoto } from "../UserPhoto";
 import { spacing } from "@/theme";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
+import { useStores } from "@/models";
 
 export const User = () => {
   const navigation = useNavigation<AppNavigatorRoutesProps>();
+  const {
+    authenticationStore: { isName, isPhoto },
+  } = useStores();
 
   const goNotifications = () => {
     navigation.navigate("Notifications");
@@ -14,12 +18,12 @@ export const User = () => {
 
   return (
     <HStack alignItems="center">
-      <UserPhoto mr={2} />
+      <UserPhoto source={{ uri: isPhoto }} mr={2} />
       <VStack flex={1}>
         <Text fontSize={spacing.sm} color="gray.100">
           Bem vindo
         </Text>
-        <Heading fontSize={spacing.patterns.heading}>Vitor Alves</Heading>
+        <Heading fontSize={spacing.patterns.heading}>{isName}</Heading>
       </VStack>
       <ButtonNotification onPress={goNotifications} />
     </HStack>

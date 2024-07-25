@@ -1,31 +1,39 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
 import { withSetPropAction } from "@/models/helpers/withSetPropAction";
-import { AuthenticationModel } from "@/models/Authentication";
+import { Authentication } from "@/models/Authentication";
+import { User } from "@react-native-google-signin/google-signin";
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore")
   .props({
-    authProperties: types.maybe(AuthenticationModel),
+    idToken: "",
+    name: "",
+    photo: "",
+    email: "",
   })
   .actions(withSetPropAction)
   .views((store) => ({
     get isAuthenticated() {
-      return !!store.authProperties;
+      return !!store.idToken;
+    },
+    get isName() {
+      return store.name;
+    },
+    get isPhoto() {
+      return store.photo;
+    },
+    get isEmail() {
+      return store.email;
     },
   }))
   .actions((store) => ({
-    signIn(res: any) {
+    async signIn(res: User) {
       const { user } = res;
-      const authProperties = AuthenticationModel.create({
-        idToken: res.idToken,
-        name: user.name,
-        photo: user.photo,
-        email: user.email,
-      });
 
-      console.log("authProperties", authProperties);
-
-      store.setProp("authProperties", authProperties);
+      store.setProp("idToken", res.idToken);
+      store.setProp("name", user.name);
+      store.setProp("photo", user.photo);
+      store.setProp("email", user.email);
     },
   }));
 

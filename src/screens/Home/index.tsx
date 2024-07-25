@@ -5,7 +5,7 @@ import { UploadSvg, DownloadSvg } from "@/svg";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HAS_HOME_MODAL = "@hasHomeModal";
+const HAS_HOME_MODAL = "APP_TIMESHEET_HAS_HOME_MODAL";
 
 export const Home = () => {
   const safeAreaProps = useSafeArea({
@@ -23,7 +23,7 @@ export const Home = () => {
       await AsyncStorage.setItem(HAS_HOME_MODAL, "read");
       setModal(!modal);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

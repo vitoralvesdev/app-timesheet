@@ -6,8 +6,6 @@ import {
 } from "@react-native-google-signin/google-signin";
 import { useStores } from "@/models";
 
-// const AUTH_TOKEN = "APP_TIMESHEET_AUTH_TOKEN";
-
 export const SignIn = () => {
   const { authenticationStore } = useStores();
 
@@ -17,20 +15,17 @@ export const SignIn = () => {
       const res = await GoogleSignin.signIn();
 
       if (res?.idToken) {
-        authenticationStore.signIn(res);
+        await authenticationStore.signIn(res);
       }
     } catch (error) {
       switch (error.code) {
         case statusCodes.SIGN_IN_CANCELLED:
-          console.error("User Sign In is required");
+          console.error("O login do usuário é obrigatório");
           break;
         case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-          console.error("Google Play Services are needed");
+          console.error("Os serviços do Google Play são necessários");
           break;
       }
-
-      console.log(error);
-      console.log("Error", error.code);
     }
   };
 
