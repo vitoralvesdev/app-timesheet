@@ -17,6 +17,7 @@
     "@react-navigation/bottom-tabs": "^6.6.0",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.10.1",
+    "apisauce": "^3.0.1",
     "date-fns": "^3.6.0",
     "eas-cli": "^10.2.0",
     "eslint-config-prettier": "^9.1.0",

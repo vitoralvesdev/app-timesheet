@@ -1,9 +1,17 @@
 import { Box, HStack, useSafeArea, VStack } from "native-base";
-import { User, Chart, Card, Filter, HomeModal } from "@/components";
+import {
+  Card,
+  Chart,
+  CustomModal,
+  Filter,
+  HomeModal,
+  User,
+} from "@/components";
 import { spacing } from "@/theme";
-import { UploadSvg, DownloadSvg } from "@/svg";
-import { useEffect, useState } from "react";
+import { DownloadSvg, UploadSvg } from "@/svg";
+import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { healthApi, KindEnum } from "@/services";
 
 const HAS_HOME_MODAL = "APP_TIMESHEET_HAS_HOME_MODAL";
 
@@ -13,6 +21,7 @@ export const Home = () => {
   });
 
   const [modal, setModal] = useState(false);
+  const [readApi, setReadApi] = useState(false);
 
   const onCloseModal = async () => {
     await setReadFromStorage();
@@ -39,6 +48,18 @@ export const Home = () => {
     getReadFromStorage().then();
   }, []);
 
+  useEffect(() => {
+    getHealthApi().then();
+
+    async function getHealthApi() {
+      const response = await healthApi.getHealth();
+
+      if (response.kind === KindEnum.OK) {
+        setReadApi(!readApi);
+      }
+    }
+  }, []);
+
   return (
     <Box flex={1} margin={5} {...safeAreaProps}>
       <VStack style={{ marginBottom: spacing.lg }}>
@@ -60,6 +81,13 @@ export const Home = () => {
       </HStack>
 
       <HomeModal visible={modal} closeCallback={onCloseModal} />
+
+      <CustomModal
+        visible={readApi}
+        description="API OK"
+        preset="success"
+        closeCallback={() => setReadApi(!readApi)}
+      />
     </Box>
   );
 };

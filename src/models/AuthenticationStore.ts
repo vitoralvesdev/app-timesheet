@@ -51,9 +51,6 @@ export const AuthenticationStoreModel = types
     get isPhoto() {
       return store.photo;
     },
-    get isEmail() {
-      return store.email;
-    },
   }))
   .actions((store) => ({
     async login(res: User) {
