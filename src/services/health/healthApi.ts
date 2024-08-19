@@ -8,9 +8,9 @@ import { ApiResponse } from "apisauce";
 
 export class HealthApi extends Api {
   async getHealth(): Promise<{ kind: KindEnum.OK } | GeneralApiProblem> {
-    const response: ApiResponse<any> = await this.apisauce.get(`/v1/health`);
+    const response: ApiResponse<any> = await this.apisauce.get(`/health`);
 
-    if (!response) {
+    if (!response.ok) {
       const problem = getGeneralApiProblem(response);
       if (problem) return problem;
     }

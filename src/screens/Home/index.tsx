@@ -22,6 +22,7 @@ export const Home = () => {
 
   const [modal, setModal] = useState(false);
   const [readApi, setReadApi] = useState(false);
+  const [error, setError] = useState(false);
 
   const onCloseModal = async () => {
     await setReadFromStorage();
@@ -44,20 +45,25 @@ export const Home = () => {
     }
   };
 
+  async function getHealthApi() {
+    const response = await healthApi.getHealth();
+
+    if (response.kind !== KindEnum.OK) {
+      setError(true);
+      return;
+    }
+
+    if (response.kind === KindEnum.OK) {
+      setReadApi(!readApi);
+    }
+  }
+
   useEffect(() => {
     getReadFromStorage().then();
   }, []);
 
   useEffect(() => {
     getHealthApi().then();
-
-    async function getHealthApi() {
-      const response = await healthApi.getHealth();
-
-      if (response.kind === KindEnum.OK) {
-        setReadApi(!readApi);
-      }
-    }
   }, []);
 
   return (
@@ -87,6 +93,14 @@ export const Home = () => {
         description="API OK"
         preset="success"
         closeCallback={() => setReadApi(!readApi)}
+      />
+
+      <CustomModal
+        visible={error}
+        description="Houve um erro ao se conectar com a API."
+        preset="error"
+        closeCallback={() => getHealthApi().then()}
+        cancelCallback={() => setError(!error)}
       />
     </Box>
   );
