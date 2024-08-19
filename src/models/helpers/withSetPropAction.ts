@@ -8,7 +8,7 @@ import {
 export const withSetPropAction = <T extends IModelType<any, any>>(
   self: IStateTreeNode<T>,
 ) => ({
-  setProp<K extends keyof SnapshotIn<T>>(key: string, value: string | null) {
+  setProp<K extends keyof SnapshotIn<T>>(key: string, value: any | null) {
     applySnapshot(self, {
       ...self,
       [key]: value,

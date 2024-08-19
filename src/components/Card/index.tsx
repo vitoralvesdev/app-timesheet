@@ -4,11 +4,11 @@ import { spacing } from "@/theme";
 
 type props = {
   icon: React.JSX.Element;
+  quantity: number;
   title: string;
-  text: string;
 };
 
-export const Card = ({ icon, title, text }: props) => {
+export const Card = ({ icon, quantity, title }: props) => {
   return (
     <Box
       flex={1}
@@ -31,9 +31,9 @@ export const Card = ({ icon, title, text }: props) => {
         {icon}
       </Box>
 
-      <Heading fontSize={spacing.md}>{title}</Heading>
+      <Heading fontSize={spacing.md}>{quantity}</Heading>
       <Text fontSize={spacing.patterns.text} color="gray.100">
-        {text}
+        {title}
       </Text>
     </Box>
   );

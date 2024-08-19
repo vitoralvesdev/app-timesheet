@@ -1,28 +1,29 @@
 import { Box, HStack, useSafeArea, VStack } from "native-base";
-import {
-  Card,
-  Chart,
-  CustomModal,
-  Filter,
-  HomeModal,
-  User,
-} from "@/components";
+import { Button, Card, Chart, Filter, HomeModal, User } from "@/components";
 import { spacing } from "@/theme";
 import { DownloadSvg, UploadSvg } from "@/svg";
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { healthApi, KindEnum } from "@/services";
+import { useStores } from "@/models";
+import { observer } from "mobx-react-lite";
 
 const HAS_HOME_MODAL = "APP_TIMESHEET_HAS_HOME_MODAL";
 
-export const Home = () => {
+export const Home = observer(() => {
   const safeAreaProps = useSafeArea({
     safeAreaTop: true,
   });
 
+  const {
+    ordersStore: {
+      fetchFinishOSQuantity,
+      fetchOpenOSQuantity,
+      getFinishOSQuantity,
+      getOpenOSQuantity,
+    },
+  } = useStores();
+
   const [modal, setModal] = useState(false);
-  const [readApi, setReadApi] = useState(false);
-  const [error, setError] = useState(false);
 
   const onCloseModal = async () => {
     await setReadFromStorage();
@@ -45,29 +46,19 @@ export const Home = () => {
     }
   };
 
-  async function getHealthApi() {
-    const response = await healthApi.getHealth();
-
-    if (response.kind !== KindEnum.OK) {
-      setError(true);
-      return;
-    }
-
-    if (response.kind === KindEnum.OK) {
-      setReadApi(!readApi);
-    }
-  }
+  const fetchData = async () => {
+    await fetchOpenOSQuantity();
+    await fetchFinishOSQuantity();
+  };
 
   useEffect(() => {
     getReadFromStorage().then();
-  }, []);
-
-  useEffect(() => {
-    getHealthApi().then();
+    fetchData().then();
   }, []);
 
   return (
     <Box flex={1} margin={5} {...safeAreaProps}>
+      <Button text="refresh" onPress={fetchData} />
       <VStack style={{ marginBottom: spacing.lg }}>
         <User />
       </VStack>
@@ -81,27 +72,20 @@ export const Home = () => {
       </VStack>
 
       <HStack style={{ gap: spacing.xs }}>
-        <Card icon={<DownloadSvg />} title="13" text="OS Abertas" />
+        <Card
+          icon={<DownloadSvg />}
+          quantity={getOpenOSQuantity}
+          title="OS Abertas"
+        />
 
-        <Card icon={<UploadSvg />} title="24" text="OS Fechadas" />
+        <Card
+          icon={<UploadSvg />}
+          quantity={getFinishOSQuantity}
+          title="OS Fechadas"
+        />
       </HStack>
 
       <HomeModal visible={modal} closeCallback={onCloseModal} />
-
-      <CustomModal
-        visible={readApi}
-        description="API OK"
-        preset="success"
-        closeCallback={() => setReadApi(!readApi)}
-      />
-
-      <CustomModal
-        visible={error}
-        description="Houve um erro ao se conectar com a API."
-        preset="error"
-        closeCallback={() => getHealthApi().then()}
-        cancelCallback={() => setError(!error)}
-      />
     </Box>
   );
-};
+});

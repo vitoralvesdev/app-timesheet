@@ -8,9 +8,9 @@ export const Filter = () => {
   return (
     <HStack alignItems="center" justifyContent="space-between">
       <Text fontSize={spacing.patterns.text} color="gray.100">
-        Últimos 90 dias
+        Último dia
       </Text>
-      <Button preset="filter" text="Mensal" rightIcon={<ArrowDownSvg />} />
+      <Button preset="filter" text="Diário" rightIcon={<ArrowDownSvg />} />
     </HStack>
   );
 };

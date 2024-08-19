@@ -30,7 +30,7 @@ export const User = observer(() => {
 
   return (
     <HStack alignItems="center">
-      <UserPhoto source={{ uri: isPhoto }} mr={2} />
+      {isPhoto ? <UserPhoto source={{ uri: isPhoto }} mr={2} /> : null}
       <VStack flex={1}>
         <Text fontSize={spacing.sm} color="gray.100">
           Bem vindo

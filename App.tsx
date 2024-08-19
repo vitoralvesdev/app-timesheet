@@ -2,12 +2,17 @@ import { NativeBaseProvider } from "native-base";
 import { THEME } from "@/theme/colors";
 import { Routes } from "src/navigators";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { healthApi, KindEnum } from "@/services";
+import { CustomModal } from "@/components";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  const [readApi, setReadApi] = useState(false);
+  const [error, setError] = useState(false);
+
   const closeSplash = async () => {
     await SplashScreen.hideAsync();
   };
@@ -21,17 +26,46 @@ export default function App() {
     });
   };
 
+  async function getHealthApi() {
+    const response = await healthApi.getHealth();
+
+    if (response.kind !== KindEnum.OK) {
+      setError(true);
+      return;
+    }
+
+    if (response.kind === KindEnum.OK) {
+      // setReadApi(!readApi);
+    }
+  }
+
   useEffect(() => {
     closeSplash().then();
   });
 
   useEffect(() => {
     configGoogleSignIn();
+    getHealthApi().then();
   }, []);
 
   return (
     <NativeBaseProvider theme={THEME}>
       <Routes />
+
+      <CustomModal
+        visible={readApi}
+        description="API OK"
+        preset="success"
+        closeCallback={() => setReadApi(!readApi)}
+      />
+
+      <CustomModal
+        visible={error}
+        description="Houve um erro ao se conectar com a API."
+        preset="error"
+        closeCallback={() => getHealthApi().then()}
+        cancelCallback={() => setError(!error)}
+      />
     </NativeBaseProvider>
   );
 }
