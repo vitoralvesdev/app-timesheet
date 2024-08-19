@@ -1,21 +1,27 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
 import { withSetPropAction } from "@/models/helpers/withSetPropAction";
-import { KindEnum, ordersApi, OrdersQuantityRequest } from "@/services";
+import {
+  KindEnum,
+  ordersApi,
+  OrdersGroupingPeriod,
+  OrdersQuantityRequest,
+  OrdersStatusEnum,
+} from "@/services";
 import { dateToText } from "@/helpers/formatDate";
 
 export const OrdersStoreModel = types
   .model("OrdersStore")
   .props({
     open: 0,
-    finish: 0,
+    finished: 0,
   })
   .actions(withSetPropAction)
   .views((store) => ({
     get getOpenOSQuantity() {
       return store.open;
     },
-    get getFinishOSQuantity() {
-      return store.finish;
+    get getFinishedOSQuantity() {
+      return store.finished;
     },
   }))
   .actions((store) => ({
@@ -23,8 +29,8 @@ export const OrdersStoreModel = types
       const params: OrdersQuantityRequest = {
         startDate: dateToText(new Date().toString(), "yyyy-MM-dd"),
         endDate: dateToText(new Date().toString(), "yyyy-MM-dd"),
-        groupingPeriod: "DAILY",
-        status: "OPEN",
+        groupingPeriod: OrdersGroupingPeriod.DAILY,
+        status: OrdersStatusEnum.OPEN,
       };
 
       const response = await ordersApi.getOrdersQuantity({ ...params });
@@ -34,18 +40,18 @@ export const OrdersStoreModel = types
       }
     },
 
-    async fetchFinishOSQuantity() {
+    async fetchFinishedOSQuantity() {
       const params: OrdersQuantityRequest = {
         startDate: dateToText(new Date().toString(), "yyyy-MM-dd"),
         endDate: dateToText(new Date().toString(), "yyyy-MM-dd"),
-        groupingPeriod: "DAILY",
-        status: "FINISHED",
+        groupingPeriod: OrdersGroupingPeriod.DAILY,
+        status: OrdersStatusEnum.FINISHED,
       };
 
       const response = await ordersApi.getOrdersQuantity({ ...params });
 
       if (response.kind === KindEnum.OK) {
-        store.setProp("finish", response[0]?.quantity);
+        store.setProp("finished", response[0]?.quantity);
       }
     },
   }));

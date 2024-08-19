@@ -5,7 +5,7 @@ export const Orders = types
   .model("Orders")
   .props({
     open: 0,
-    finish: 0,
+    finished: 0,
   })
   .actions(withSetPropAction);
 

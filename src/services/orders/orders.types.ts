@@ -1,8 +1,8 @@
 export interface OrdersQuantityRequest {
   startDate: string;
   endDate: string;
-  groupingPeriod: "YEARLY" | "MONTHLY" | "WEEKLY" | "DAILY";
-  status: "OPEN" | "IN_PROGRESS" | "FINISHED";
+  groupingPeriod: OrdersGroupingPeriod;
+  status: OrdersStatusEnum;
 }
 
 export interface OrdersQuantityResponse {
@@ -12,4 +12,17 @@ export interface OrdersQuantityResponse {
   week: number;
   day: number;
   status: string;
+}
+
+export enum OrdersGroupingPeriod {
+  YEARLY = "YEARLY",
+  MONTHLY = "MONTHLY",
+  WEEKLY = "WEEKLY",
+  DAILY = "DAILY",
+}
+
+export enum OrdersStatusEnum {
+  OPEN = "OPEN",
+  PROGRESS = "IN_PROGRESS",
+  FINISHED = "FINISHED",
 }
