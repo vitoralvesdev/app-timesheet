@@ -3,7 +3,7 @@ import { withSetPropAction } from "@/models/helpers/withSetPropAction";
 import {
   KindEnum,
   ordersApi,
-  OrdersGroupingPeriod,
+  OrdersGroupingPeriodEnum,
   OrdersQuantityRequest,
   OrdersStatusEnum,
 } from "@/services";
@@ -29,7 +29,7 @@ export const OrdersStoreModel = types
       const params: OrdersQuantityRequest = {
         startDate: dateToText(new Date().toString(), "yyyy-MM-dd"),
         endDate: dateToText(new Date().toString(), "yyyy-MM-dd"),
-        groupingPeriod: OrdersGroupingPeriod.DAILY,
+        groupingPeriod: OrdersGroupingPeriodEnum.DAILY,
         status: OrdersStatusEnum.OPEN,
       };
 
@@ -44,7 +44,7 @@ export const OrdersStoreModel = types
       const params: OrdersQuantityRequest = {
         startDate: dateToText(new Date().toString(), "yyyy-MM-dd"),
         endDate: dateToText(new Date().toString(), "yyyy-MM-dd"),
-        groupingPeriod: OrdersGroupingPeriod.DAILY,
+        groupingPeriod: OrdersGroupingPeriodEnum.DAILY,
         status: OrdersStatusEnum.FINISHED,
       };
 
