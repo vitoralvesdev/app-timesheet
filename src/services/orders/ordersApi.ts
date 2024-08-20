@@ -9,25 +9,26 @@ import {
   OrderRequest,
   OrderResponse,
   OrderUpdateRequest,
+  OrdersResponse,
 } from "@/services";
 import { ApiResponse } from "apisauce";
 
 export class OrdersApi extends Api {
   async getOrders(
     request: OrdersRequest,
-  ): Promise<{ kind: KindEnum.OK } | GeneralApiProblem> {
+  ): Promise<
+    { kind: KindEnum.OK; result: OrdersResponse } | GeneralApiProblem
+  > {
     const response: ApiResponse<any> = await this.apisauce.get(
-      `/v1/orders?page=${request.page}&pageSize=${request.pageSize}&startDate=${request.startDate}&endDate=${request.endDate}&status=${request.status}`,
+      `/v1/orders?page=${request.page}&pageSize=${request.pageSize}`, //&startDate=${request.startDate}&endDate=${request.endDate}&status=${request.status}
     );
-
-    console.log(response);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
       if (problem) return problem;
     }
 
-    return { kind: KindEnum.OK };
+    return { kind: KindEnum.OK, result: response.data };
   }
 
   async getOrdersQuantity(

@@ -28,7 +28,6 @@ export const Home = observer(() => {
   } = useStores();
 
   const [modal, setModal] = useState(false);
-
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {

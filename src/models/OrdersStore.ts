@@ -2,9 +2,11 @@ import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
 import { withSetPropAction } from "@/models/helpers/withSetPropAction";
 import {
   KindEnum,
+  OrderRequest,
   ordersApi,
   OrdersGroupingPeriodEnum,
   OrdersQuantityRequest,
+  OrdersRequest,
   OrdersStatusEnum,
 } from "@/services";
 import { dateToText } from "@/helpers/formatDate";
@@ -14,9 +16,13 @@ export const OrdersStoreModel = types
   .props({
     open: 0,
     finished: 0,
+    items: "",
   })
   .actions(withSetPropAction)
   .views((store) => ({
+    get getItems() {
+      return !store.items ? [] : JSON.parse(store.items);
+    },
     get getOpenOSQuantity() {
       return store.open;
     },
@@ -25,6 +31,21 @@ export const OrdersStoreModel = types
     },
   }))
   .actions((store) => ({
+    async fetchOS() {
+      const params: OrdersRequest = {
+        page: 1,
+        pageSize: 10,
+      };
+
+      const response = await ordersApi.getOrders({ ...params });
+
+      if (response.kind === KindEnum.OK) {
+        const { result } = response;
+
+        store.setProp("items", JSON.stringify(result.items));
+      }
+    },
+
     async fetchOpenOSQuantity() {
       const params: OrdersQuantityRequest = {
         startDate: dateToText(new Date().toString(), "yyyy-MM-dd"),

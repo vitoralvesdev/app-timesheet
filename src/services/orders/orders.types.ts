@@ -6,6 +6,20 @@ export interface OrdersRequest {
   status?: OrdersStatusEnum;
 }
 
+export interface OrdersResponse {
+  items: any[];
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: 0;
+  };
+  totalHours: {
+    hours: number;
+    minutes: number;
+    seconds: number;
+  };
+}
+
 export interface OrdersQuantityRequest {
   startDate: string;
   endDate: string;

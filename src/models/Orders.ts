@@ -6,6 +6,7 @@ export const Orders = types
   .props({
     open: 0,
     finished: 0,
+    items: "",
   })
   .actions(withSetPropAction);
 
