@@ -68,7 +68,10 @@ export class OrdersApi extends Api {
   async createOrder(
     request: OrderRequest,
   ): Promise<{ kind: KindEnum.OK } | GeneralApiProblem> {
-    const response: ApiResponse<any> = await this.apisauce.post(`/v1/orders`);
+    const response: ApiResponse<any> = await this.apisauce.post(
+      `/v1/orders`,
+      request,
+    );
 
     console.log(response);
 

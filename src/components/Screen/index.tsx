@@ -1,5 +1,5 @@
-import { ScrollView, useSafeArea } from "native-base";
-import React, { useCallback, useState } from "react";
+import { Box, ScrollView, useSafeArea } from "native-base";
+import React from "react";
 import {
   GestureHandlerRootView,
   RefreshControl,
@@ -20,7 +20,7 @@ interface ScreenProps {
   /**
    * Called when the view starts refreshing.
    */
-  onRefresh: () => void | undefined;
+  onRefresh?: () => void | undefined;
 }
 
 export const Screen = ({ children, refreshing, onRefresh }: ScreenProps) => {
@@ -30,15 +30,23 @@ export const Screen = ({ children, refreshing, onRefresh }: ScreenProps) => {
 
   return (
     <GestureHandlerRootView style={$flex}>
-      <ScrollView
-        contentContainerStyle={$flex}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        {...safeAreaProps}
-      >
-        {children}
-      </ScrollView>
+      {onRefresh ? (
+        <ScrollView
+          contentContainerStyle={$flex}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          {...safeAreaProps}
+        >
+          {children}
+        </ScrollView>
+      ) : null}
+
+      {!onRefresh ? (
+        <Box flex={1} {...safeAreaProps}>
+          {children}
+        </Box>
+      ) : null}
     </GestureHandlerRootView>
   );
 };

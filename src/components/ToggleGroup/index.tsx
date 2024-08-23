@@ -3,13 +3,20 @@ import React, { useState } from "react";
 import { spacing, THEME } from "@/theme";
 import { TouchableOpacity, ViewStyle } from "react-native";
 
-type props = {
+type ToggleGroupProps = {
   items: string[];
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
 };
 
-export const ToggleGroup = ({ items, onChange }: props) => {
-  const [activeItem, setActiveItem] = useState(items[0]);
+export const ToggleGroup = (props: ToggleGroupProps) => {
+  const { items, onChange, ...rest } = props;
+
+  const [activeItem, setActiveItem] = useState(0);
+
+  const handlePress = (item: string, index: number) => {
+    setActiveItem(index);
+    onChange(item);
+  };
 
   return (
     <HStack
@@ -24,17 +31,14 @@ export const ToggleGroup = ({ items, onChange }: props) => {
     >
       {items.map((item, index) => (
         <TouchableOpacity
-          onPress={() => {
-            setActiveItem(item);
-            onChange && onChange(item);
-          }}
           key={index}
+          style={activeItem === index ? $activeStyle : $baseStyle}
+          onPress={() => handlePress(item, index)}
+          {...rest}
         >
-          <Box style={activeItem === item ? $activeStyle : $baseStyle}>
-            <Text color={activeItem === item ? "gray.300" : "gray.400"}>
-              {item}
-            </Text>
-          </Box>
+          <Text color={activeItem === index ? "gray.300" : "gray.400"}>
+            {item}
+          </Text>
         </TouchableOpacity>
       ))}
     </HStack>

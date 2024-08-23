@@ -5,11 +5,35 @@ import { spacing, THEME } from "@/theme";
 import { TouchableOpacityProps } from "react-native-gesture-handler";
 
 type props = {
+  /**
+   * A value of button
+   */
   text: string;
+
+  /**
+   * An item to choose button layout
+   */
   preset?: "default" | "filter" | "error" | "google";
+
+  /**
+   * An item to show left icon
+   */
   leftIcon?: React.JSX.Element;
+
+  /**
+   * An item to show right icon
+   */
   rightIcon?: React.JSX.Element;
+
+  /**
+   * item to handle button click
+   */
   onPress?: TouchableOpacityProps["onPress"];
+
+  /**
+   * An item to disabled button
+   */
+  disabled?: boolean;
 };
 
 export const Button = ({
@@ -18,6 +42,7 @@ export const Button = ({
   leftIcon,
   rightIcon,
   onPress,
+  disabled,
 }: props) => {
   const renderStyle = () => {
     if (preset === "filter") {
@@ -42,6 +67,7 @@ export const Button = ({
       style={renderStyle()}
       text={text}
       onPress={onPress}
+      disabled={disabled}
     >
       <TouchableOpacity onPress={onPress}>
         {preset === "filter" ? (

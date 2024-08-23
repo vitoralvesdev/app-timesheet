@@ -12,77 +12,60 @@ import { Controller, useForm } from "react-hook-form";
 import { SearchSvg } from "@/svg";
 import { useCallback, useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { useStores } from "@/models";
 import { observer } from "mobx-react-lite";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
+import { ContainerLayoutOsDetailsEnum } from "@/screens/OsDetails";
+import { KindEnum, ordersApi, OrdersRequest } from "@/services";
 
 type OsProps = {
-  title: string;
-  description: string;
+  companyName: string;
+  serviceDescription: string;
   status: string;
 };
-
-// const DATA: OsProps[] = [
-//   {
-//     title: "BHUT",
-//     description: "OS: 123456",
-//     status: "Abertas",
-//   },
-//   {
-//     title: "BHUT",
-//     description: "OS: 1234678",
-//     status: "Andamento",
-//   },
-//   {
-//     title: "Bepay",
-//     description: "OS: E467783",
-//     status: "Abertas",
-//   },
-//   {
-//     title: "Ambev",
-//     description: "OS: D234567",
-//     status: "Abertas",
-//   },
-//   {
-//     title: "99 Pay",
-//     description: "OS: B1256",
-//     status: "Abertas",
-//   },
-// ];
 
 interface IFormValues {
   search: string;
 }
 
-export enum ToggleEnum {
-  All = "Todas",
-  Open = "Abertas",
-  Progress = "Andamento",
+export enum StatusEnum {
+  All = "ALL",
+  Open = "OPEN",
+  Progress = "IN_PROGRESS",
 }
 
+export const StatusLabel = new Map([
+  ["ALL", "Todas"],
+  ["OPEN", "Aberta"],
+  ["IN_PROGRESS", "Andamento"],
+]);
+
 export const Os = observer(() => {
-  const {
-    ordersStore: { fetchOS, getItems },
-  } = useStores();
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
 
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
-  const [toggle, setToggle] = useState("");
+  const [toggle, setToggle] = useState(
+    StatusLabel.get(StatusEnum.All) as string,
+  );
+  const [orders, setOrders] = useState([]);
 
   const { control } = useForm<IFormValues>({
     mode: "onChange",
   });
 
   const filterStatus = (item: OsProps) => {
-    if (!toggle) {
-      return item;
-    }
-
     const { status } = item;
 
+    if (toggle === StatusLabel.get(StatusEnum.All)) {
+      return true;
+    }
+
     return (
-      toggle === ToggleEnum.All ||
-      (toggle === ToggleEnum.Open && status === ToggleEnum.Open) ||
-      (toggle === ToggleEnum.Progress && status === ToggleEnum.Progress)
+      (toggle === StatusLabel.get(StatusEnum.Open) &&
+        status === StatusEnum.Open) ||
+      (toggle === StatusLabel.get(StatusEnum.Progress) &&
+        status === StatusEnum.Progress)
     );
   };
 
@@ -92,8 +75,8 @@ export const Os = observer(() => {
     }
 
     return (
-      item.title.toLowerCase().includes(search.toLowerCase()) ||
-      item.description.toLowerCase().includes(search.toLowerCase())
+      item.companyName.toLowerCase().includes(search.toLowerCase()) ||
+      item.serviceDescription.toLowerCase().includes(search.toLowerCase())
     );
   };
 
@@ -104,7 +87,24 @@ export const Os = observer(() => {
   }, []);
 
   const fetchData = async () => {
-    await fetchOS();
+    const params: OrdersRequest = {
+      page: 1,
+      pageSize: 10,
+    };
+
+    const response = await ordersApi.getOrders({ ...params });
+
+    if (response.kind === KindEnum.OK) {
+      const { result } = response;
+
+      console.log(result.items);
+
+      setOrders(result.items);
+    }
+  };
+
+  const goOsDetails = (layout: ContainerLayoutOsDetailsEnum) => {
+    navigation.navigate("OsDetails", { containerLayout: layout });
   };
 
   useEffect(() => {
@@ -138,27 +138,33 @@ export const Os = observer(() => {
 
         <HStack marginX={5}>
           <ToggleGroup
-            items={["Todas", "Abertas", "Andamento"]}
+            items={Array.from(StatusLabel.values())}
             onChange={(v) => setToggle(v)}
           />
         </HStack>
 
-        {getItems.length === 0 ? (
+        {orders.length === 0 ? (
           <VStack marginY={spacing.lg}>
             <NoContent
               title="Ops"
               description="Parece que não existe nenhuma OS cadastrada."
+              onPress={() => goOsDetails(ContainerLayoutOsDetailsEnum.Create)}
             />
           </VStack>
         ) : null}
 
-        {getItems ? (
+        {orders ? (
           <ScrollView>
-            {getItems
+            {orders
               .filter((item) => filterStatus(item))
               .filter((item) => filterItems(item))
               .map((item, index) => (
-                <TouchableOpacity key={index}>
+                <TouchableOpacity
+                  key={index}
+                  onPress={() =>
+                    goOsDetails(ContainerLayoutOsDetailsEnum.Start)
+                  }
+                >
                   <HStack
                     alignItems="center"
                     justifyContent="center"
@@ -173,16 +179,18 @@ export const Os = observer(() => {
                         fontSize={spacing.patterns.text}
                         fontWeight="bold"
                       >
-                        {item.title}
+                        {item.companyName}
                       </Text>
-                      <Text color="gray.100">{item.description}</Text>
+                      <Text color="gray.100">{item.serviceDescription}</Text>
                     </VStack>
 
                     <VStack marginX={5}>
                       <Chip
-                        title={item.status}
+                        title={StatusLabel.get(item.status) as string}
                         preset={
-                          item.status === "Andamento" ? "active" : "default"
+                          item.status === StatusEnum.Progress
+                            ? "active"
+                            : "default"
                         }
                       />
                     </VStack>

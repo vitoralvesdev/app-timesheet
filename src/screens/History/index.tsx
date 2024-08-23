@@ -1,83 +1,35 @@
-import { Box, useSafeArea } from "native-base";
-import { Agenda } from "@/components";
+import { Agenda, Screen } from "@/components";
+import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
+import { KindEnum, ordersApi, OrdersRequest } from "@/services";
 
-type HistoryDataProps = {
-  name: string;
-  hours: string;
-};
+export const History = observer(() => {
+  const [orders, setOrders] = useState([]);
 
-type HistoryProps = {
-  title: string;
-  data: HistoryDataProps[];
-};
+  const fetchData = async () => {
+    const params: OrdersRequest = {
+      page: 1,
+      pageSize: 10,
+    };
 
-const DATA: HistoryProps[] = [
-  {
-    title: "2024-07-09",
-    data: [
-      {
-        name: "BHUT",
-        hours: "08:00 - 12:00",
-      },
-      {
-        name: "Bepay",
-        hours: "15:30 - 17:00",
-      },
-      {
-        name: "Ambev",
-        hours: "17:30 -18:00",
-      },
-    ],
-  },
-  {
-    title: "2024-07-10",
-    data: [
-      {
-        name: "Bepay",
-        hours: "15:30 - 17:00",
-      },
-      {
-        name: "Ambev",
-        hours: "17:30 -18:00",
-      },
-    ],
-  },
-  {
-    title: "2024-07-11",
-    data: [
-      {
-        name: "Bepay",
-        hours: "15:30 - 17:00",
-      },
-      {
-        name: "Ambev",
-        hours: "17:30 -18:00",
-      },
-    ],
-  },
-  {
-    title: "2024-07-12",
-    data: [
-      {
-        name: "Bepay",
-        hours: "15:30 - 17:00",
-      },
-      {
-        name: "Ambev",
-        hours: "17:30 -18:00",
-      },
-    ],
-  },
-];
+    const response = await ordersApi.getOrders({ ...params });
 
-export const History = () => {
-  const safeAreaProps = useSafeArea({
-    safeAreaTop: true,
-  });
+    if (response.kind === KindEnum.OK) {
+      const { result } = response;
+
+      console.log(result);
+
+      setOrders(result.items);
+    }
+  };
+
+  useEffect(() => {
+    fetchData().then();
+  }, []);
 
   return (
-    <Box flex={1} {...safeAreaProps}>
-      <Agenda data={DATA} />
-    </Box>
+    <Screen refreshing={false}>
+      <Agenda data={orders} />
+    </Screen>
   );
-};
+});

@@ -31,21 +31,6 @@ export const OrdersStoreModel = types
     },
   }))
   .actions((store) => ({
-    async fetchOS() {
-      const params: OrdersRequest = {
-        page: 1,
-        pageSize: 10,
-      };
-
-      const response = await ordersApi.getOrders({ ...params });
-
-      if (response.kind === KindEnum.OK) {
-        const { result } = response;
-
-        store.setProp("items", JSON.stringify(result.items));
-      }
-    },
-
     async fetchOpenOSQuantity() {
       const params: OrdersQuantityRequest = {
         startDate: dateToText(new Date().toString(), "yyyy-MM-dd"),

@@ -1534,7 +1534,7 @@ PODS:
   - RNFBApp (20.3.0):
     - Firebase/CoreOnly (= 10.29.0)
     - React-Core
-  - RNGestureHandler (2.17.1):
+  - RNGestureHandler (2.18.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1951,7 +1951,7 @@ SPEC CHECKSUMS:
   ReactCommon: f00e436b3925a7ae44dfa294b43ef360fbd8ccc4
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNFBApp: a7aff07a7f212149539fce51a1326c6d208b03ad
-  RNGestureHandler: 8dbcccada4a7e702e7dec9338c251b1cf393c960
+  RNGestureHandler: efed690b8493a00b99654043daeb1335276ac4a2
   RNGoogleSignin: 08dc4ba7eac2096c7fecfe109f0950fa4683c803
   RNReanimated: f4ff116e33e0afc3d127f70efe928847c7c66355
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208

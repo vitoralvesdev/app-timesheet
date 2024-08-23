@@ -19,6 +19,7 @@ type AppRoutes = {
   Home: undefined;
   History: undefined;
   Os: undefined;
+  OsDetails: { containerLayout: string };
   Notifications: undefined;
 };
 
