@@ -55,8 +55,6 @@ export class OrdersApi extends Api {
       `/v1/orders/${request.id}`,
     );
 
-    console.log(response);
-
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
       if (problem) return problem;
@@ -84,14 +82,13 @@ export class OrdersApi extends Api {
   }
 
   async startOrder(
+    id: string,
     request: OrderUpdateRequest,
   ): Promise<{ kind: KindEnum.OK } | GeneralApiProblem> {
-    const response: ApiResponse<any> = await this.apisauce.put(
-      `/v1/orders${request.id}/start`,
+    const response: ApiResponse<any> = await this.apisauce.patch(
+      `/v1/orders/${id}/start`,
       request,
     );
-
-    console.log(response);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
@@ -102,14 +99,15 @@ export class OrdersApi extends Api {
   }
 
   async endOrder(
+    id: string,
     request: OrderUpdateRequest,
   ): Promise<{ kind: KindEnum.OK } | GeneralApiProblem> {
-    const response: ApiResponse<any> = await this.apisauce.put(
-      `/v1/orders${request.id}/end`,
+    const response: ApiResponse<any> = await this.apisauce.patch(
+      `/v1/orders/${id}/end`,
       request,
     );
 
-    console.log(response);
+    console.log(response.data);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

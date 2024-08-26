@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 const dateToText = (date: string, f?: string): string => {
@@ -6,7 +6,9 @@ const dateToText = (date: string, f?: string): string => {
     return "";
   }
 
-  return format(date, f ?? "dd MMMM yyyy", { locale: ptBR });
+  return format(parseISO(date), f ?? "dd MMMM yyyy", {
+    locale: ptBR,
+  });
 };
 
 export { dateToText };

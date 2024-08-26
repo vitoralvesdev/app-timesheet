@@ -4,15 +4,18 @@ import { spacing, THEME } from "@/theme";
 import { ViewStyle } from "react-native";
 
 type props = {
-  onChange?: (value: string) => void;
+  currentTime?: Date | undefined;
+  onChange: (value: Date) => void;
 };
 
-export const Clock = ({ onChange }: props) => {
-  const [time, setTime] = useState(new Date());
+export const Clock = ({ currentTime, onChange }: props) => {
+  const [time, setTime] = useState<Date>(new Date());
+  const _currentTime = currentTime && new Date(currentTime);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTime(new Date());
+      onChange(new Date());
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -21,10 +24,17 @@ export const Clock = ({ onChange }: props) => {
   return (
     <Box style={$baseStyle}>
       <Text color="gray.300" fontSize={spacing.xl}>
-        {time.toLocaleTimeString("pt-BR", {
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
+        {_currentTime &&
+          _currentTime.toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+
+        {!_currentTime &&
+          time.toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
       </Text>
     </Box>
   );

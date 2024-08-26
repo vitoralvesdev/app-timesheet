@@ -4,7 +4,7 @@ import { UserPhoto } from "../UserPhoto";
 import { spacing } from "@/theme";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
-import { useStores } from "@/models";
+import { useStores } from "src/stores";
 import { observer } from "mobx-react-lite";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 

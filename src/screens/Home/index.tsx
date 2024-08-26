@@ -12,7 +12,7 @@ import { spacing } from "@/theme";
 import { DownloadSvg, UploadSvg } from "@/svg";
 import React, { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useStores } from "@/models";
+import { useStores } from "src/stores";
 import { observer } from "mobx-react-lite";
 
 const HAS_HOME_MODAL = "APP_TIMESHEET_HAS_HOME_MODAL";

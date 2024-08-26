@@ -15,8 +15,14 @@ import { TouchableOpacity } from "react-native";
 import { observer } from "mobx-react-lite";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
-import { ContainerLayoutOsDetailsEnum } from "@/screens/OsDetails";
-import { KindEnum, ordersApi, OrdersRequest } from "@/services";
+import {
+  KindEnum,
+  OrderResponse,
+  ordersApi,
+  OrdersRequest,
+  OrdersStatusEnum,
+} from "@/services";
+import { useStores } from "@/stores";
 
 type OsProps = {
   companyName: string;
@@ -42,6 +48,7 @@ export const StatusLabel = new Map([
 
 export const Os = observer(() => {
   const navigation = useNavigation<AppNavigatorRoutesProps>();
+  const { ordersStore } = useStores();
 
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
@@ -97,14 +104,20 @@ export const Os = observer(() => {
     if (response.kind === KindEnum.OK) {
       const { result } = response;
 
-      console.log(result.items);
+      const finishedItems = result.items.filter(
+        (item) => item.status !== OrdersStatusEnum.FINISHED,
+      );
 
-      setOrders(result.items);
+      setOrders(finishedItems);
     }
   };
 
-  const goOsDetails = (layout: ContainerLayoutOsDetailsEnum) => {
-    navigation.navigate("OsDetails", { containerLayout: layout });
+  const goOsDetails = (item?: OrderResponse) => {
+    if (item) {
+      ordersStore.setProp("id", item.id);
+    }
+
+    navigation.navigate("OsDetails");
   };
 
   useEffect(() => {
@@ -148,7 +161,7 @@ export const Os = observer(() => {
             <NoContent
               title="Ops"
               description="Parece que não existe nenhuma OS cadastrada."
-              onPress={() => goOsDetails(ContainerLayoutOsDetailsEnum.Create)}
+              onPress={() => goOsDetails()}
             />
           </VStack>
         ) : null}
@@ -159,12 +172,7 @@ export const Os = observer(() => {
               .filter((item) => filterStatus(item))
               .filter((item) => filterItems(item))
               .map((item, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() =>
-                    goOsDetails(ContainerLayoutOsDetailsEnum.Start)
-                  }
-                >
+                <TouchableOpacity key={index} onPress={() => goOsDetails(item)}>
                   <HStack
                     alignItems="center"
                     justifyContent="center"

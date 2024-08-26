@@ -8,28 +8,25 @@ import {
 import {
   AgendaList,
   CalendarProvider,
+  DateData,
   ExpandableCalendar,
   LocaleConfig,
 } from "react-native-calendars";
 import { spacing, THEME } from "@/theme";
 import { Heading, HStack, Text, VStack } from "native-base";
 import { ViewStyle } from "react-native";
-import { dateToText } from "@/helpers/formatDate";
 import { SectionListData } from "react-native/Libraries/Lists/SectionList";
-import { useNavigation } from "@react-navigation/native";
-import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
 import { NoContent } from "@/components";
-import { ContainerLayoutOsDetailsEnum } from "@/screens/OsDetails";
-import { OrdersStatusEnum } from "@/services";
+import { OrderResponse, OrdersResponse, OrdersStatusEnum } from "@/services";
+import { dateToText } from "@/helpers/formatDate";
 
 type AgendaProps = {
   data: readonly SectionListData<any, any>[];
+  onDayPress?: (date: DateData) => void;
 };
 
-export const Agenda = ({ data }: AgendaProps) => {
-  const navigation = useNavigation<AppNavigatorRoutesProps>();
-
-  const [selectedDay] = useState<string>(new Date().toString());
+export const Agenda = ({ data, onDayPress }: AgendaProps) => {
+  const [currentDay] = useState<string>(new Date().toString());
 
   LocaleConfig.locales.pt = {
     monthNames: getMonthNames(),
@@ -41,15 +38,15 @@ export const Agenda = ({ data }: AgendaProps) => {
 
   LocaleConfig.defaultLocale = "pt";
 
-  const formatItems = (items: any) => {
+  const formatItems = (items: OrderResponse[]) => {
     const finishedItems = items.filter(
       (item) => item.status === OrdersStatusEnum.FINISHED,
     );
 
     const groupedData = finishedItems.reduce((acc, item) => {
-      const { schedulingDate, companyName, startDateTime, endDateTime } = item;
+      const { schedulingDate, companyName, totalHours } = item;
 
-      const hours = `${startDateTime} - ${endDateTime}`;
+      const hours = `${totalHours.hours}:${totalHours.minutes}:${totalHours.seconds}`;
 
       if (acc[schedulingDate]) {
         acc[schedulingDate].push({ name: companyName, hours });
@@ -66,15 +63,11 @@ export const Agenda = ({ data }: AgendaProps) => {
     }));
   };
 
-  const goOsDetails = (layout: ContainerLayoutOsDetailsEnum) => {
-    navigation.navigate("OsDetails", { containerLayout: layout });
-  };
-
-  const renderSectionHeader = (date: any) => {
+  const renderSectionHeader = (date: string) => {
     return (
       <HStack pl={5} paddingY={spacing.xxs} style={$headerStyle}>
         <Heading marginBottom={1} fontSize={spacing.lg} color="purple.200">
-          {date}
+          {dateToText(date)}
         </Heading>
       </HStack>
     );
@@ -109,7 +102,7 @@ export const Agenda = ({ data }: AgendaProps) => {
   };
 
   return (
-    <CalendarProvider date={selectedDay}>
+    <CalendarProvider date={currentDay}>
       <ExpandableCalendar
         allowShadow={false}
         style={$borderStyle}
@@ -124,12 +117,12 @@ export const Agenda = ({ data }: AgendaProps) => {
           selectedDotColor: THEME.colors.gray[600],
           agendaKnobColor: THEME.colors.purple[200],
         }}
-        onDayPress={() => goOsDetails(ContainerLayoutOsDetailsEnum.Create)}
+        onDayPress={onDayPress}
       />
       {formatItems(data).length === 0 ? renderNoContent() : null}
       <AgendaList
         sections={formatItems(data)}
-        renderSectionHeader={(item) => renderSectionHeader(item)}
+        renderSectionHeader={(item) => renderSectionHeader(item as string)}
         renderItem={(item) => renderItem(item)}
       />
     </CalendarProvider>

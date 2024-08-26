@@ -4,7 +4,7 @@ import {
   GoogleSignin,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import { useStores } from "@/models";
+import { useStores } from "src/stores";
 import React, { useEffect } from "react";
 import {
   BackgroundCircleLoginSvg,

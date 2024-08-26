@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Text } from "native-base";
 import { spacing, THEME } from "@/theme";
 import { ViewStyle } from "react-native";
+import { dateToText } from "@/helpers/formatDate";
 
-type props = {
-  // onChange?: (value: string) => void;
-};
-
-export const CurrentDate = ({}: props) => {
+interface CurrentDateProps {
+  date: string;
+}
+export const CurrentDate = ({ date }: CurrentDateProps) => {
   return (
     <Box style={$baseStyle}>
       <Text color="gray.300" fontSize={spacing.xl}>
-        {new Date().toString()}
+        {dateToText(date.toString(), "dd MMMM yyyy")}
       </Text>
     </Box>
   );

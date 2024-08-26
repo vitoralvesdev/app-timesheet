@@ -2,8 +2,15 @@ import { Agenda, Screen } from "@/components";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { KindEnum, ordersApi, OrdersRequest } from "@/services";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
+import { useStores } from "@/stores";
+import { DateData } from "react-native-calendars";
 
 export const History = observer(() => {
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
+  const { ordersStore } = useStores();
+
   const [orders, setOrders] = useState([]);
 
   const fetchData = async () => {
@@ -17,10 +24,15 @@ export const History = observer(() => {
     if (response.kind === KindEnum.OK) {
       const { result } = response;
 
-      console.log(result);
-
       setOrders(result.items);
     }
+  };
+
+  const goOsDetails = (data: DateData) => {
+    ordersStore.setProp("id", "");
+    ordersStore.setProp("selectedDay", data.dateString);
+
+    navigation.navigate("OsDetails");
   };
 
   useEffect(() => {
@@ -29,7 +41,7 @@ export const History = observer(() => {
 
   return (
     <Screen refreshing={false}>
-      <Agenda data={orders} />
+      <Agenda data={orders} onDayPress={(v) => goOsDetails(v)} />
     </Screen>
   );
 });

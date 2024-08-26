@@ -2,7 +2,7 @@ import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { THEME } from "@/theme";
 import { AppRoutes } from "./app.routes";
 import { AuthRoutes } from "./auth.routes";
-import { useStores } from "@/models";
+import { useStores } from "src/stores";
 import { observer } from "mobx-react-lite";
 
 const _THEME = {

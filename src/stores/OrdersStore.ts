@@ -1,12 +1,10 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
-import { withSetPropAction } from "@/models/helpers/withSetPropAction";
+import { withSetPropAction } from "@/stores/helpers/withSetPropAction";
 import {
   KindEnum,
-  OrderRequest,
   ordersApi,
   OrdersGroupingPeriodEnum,
   OrdersQuantityRequest,
-  OrdersRequest,
   OrdersStatusEnum,
 } from "@/services";
 import { dateToText } from "@/helpers/formatDate";
@@ -14,15 +12,15 @@ import { dateToText } from "@/helpers/formatDate";
 export const OrdersStoreModel = types
   .model("OrdersStore")
   .props({
+    id: "",
     open: 0,
     finished: 0,
-    items: "",
+    selectedDay: "",
+    recordedLatitude: 0,
+    recordedLongitude: 0,
   })
   .actions(withSetPropAction)
   .views((store) => ({
-    get getItems() {
-      return !store.items ? [] : JSON.parse(store.items);
-    },
     get getOpenOSQuantity() {
       return store.open;
     },
@@ -42,7 +40,9 @@ export const OrdersStoreModel = types
       const response = await ordersApi.getOrdersQuantity({ ...params });
 
       if (response.kind === KindEnum.OK) {
-        store.setProp("open", response[0]?.quantity);
+        const { result } = response;
+
+        store.setProp("open", result[0]?.quantity);
       }
     },
 
@@ -57,7 +57,9 @@ export const OrdersStoreModel = types
       const response = await ordersApi.getOrdersQuantity({ ...params });
 
       if (response.kind === KindEnum.OK) {
-        store.setProp("finished", response[0]?.quantity);
+        const { result } = response;
+
+        store.setProp("finished", result[0]?.quantity);
       }
     },
   }));

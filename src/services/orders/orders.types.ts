@@ -7,7 +7,7 @@ export interface OrdersRequest {
 }
 
 export interface OrdersResponse {
-  items: any[];
+  items: OrderResponse[];
   pagination: {
     page: number;
     pageSize: number;
@@ -38,11 +38,11 @@ export interface OrdersQuantityResponse {
 
 export interface OrderRequest {
   id?: string;
-  serviceDescription: string;
-  companyName: string;
-  companyAddressLatitude: number;
-  companyAddressLongitude: number;
-  schedulingDate: string;
+  serviceDescription?: string;
+  companyName?: string;
+  companyAddressLatitude?: number;
+  companyAddressLongitude?: number;
+  schedulingDate?: string;
 }
 
 export interface OrderResponse {
@@ -51,8 +51,8 @@ export interface OrderResponse {
   serviceDescription: string;
   companyName: string;
   schedulingDate: string;
-  startDatetime: string;
-  endDatetime: string;
+  startDatetime: Date;
+  endDatetime: Date;
   endComment: string;
   totalHours: {
     hours: number;
@@ -60,14 +60,13 @@ export interface OrderResponse {
     seconds: number;
   };
   status: OrdersStatusEnum;
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 export interface OrderUpdateRequest {
-  id?: string;
-  startDatetime?: string;
-  endDateTime?: string;
+  startDatetime?: Date;
+  endDatetime?: Date;
   recordedLatitude: number;
   recordedLongitude: number;
   comment?: string;

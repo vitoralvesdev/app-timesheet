@@ -17,7 +17,7 @@ export interface CustomModalProps extends ModalProps {
   title?: string;
   description: string;
   preset: "success" | "error";
-  closeCallback: TouchableOpacityProps["onPress"];
+  closeCallback?: TouchableOpacityProps["onPress"];
   cancelCallback?: TouchableOpacityProps["onPress"];
 }
 
@@ -42,7 +42,7 @@ export const CustomModal = (props: CustomModalProps) => {
           </Text>
         </View>
 
-        <Button text="Continuar" onPress={closeCallback} />
+        {closeCallback && <Button text="Continuar" onPress={closeCallback} />}
       </>
     );
   };
@@ -62,7 +62,9 @@ export const CustomModal = (props: CustomModalProps) => {
             {description}
           </Text>
         </View>
-        <Button text="Tentar Novamente" onPress={closeCallback} />
+        {closeCallback && (
+          <Button text="Tentar Novamente" onPress={closeCallback} />
+        )}
         <Button text="Cancelar" preset="error" onPress={cancelCallback} />
       </>
     );

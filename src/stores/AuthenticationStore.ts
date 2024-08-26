@@ -1,5 +1,5 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
-import { withSetPropAction } from "@/models/helpers/withSetPropAction";
+import { withSetPropAction } from "@/stores/helpers/withSetPropAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "@react-native-google-signin/google-signin";
 

@@ -17,6 +17,7 @@ export const TextField = ({
   value,
   onChange,
   numberOfLines,
+  ...rest
 }: props) => {
   return (
     <Input
@@ -37,6 +38,7 @@ export const TextField = ({
       multiline={!!numberOfLines}
       numberOfLines={numberOfLines}
       height={numberOfLines ? 132 : null}
+      {...rest}
     />
   );
 };
