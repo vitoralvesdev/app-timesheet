@@ -43,10 +43,17 @@ interface OsDetailsProps extends AppStackScreenProps<"OsDetails"> {}
 export const OsDetails: FC<OsDetailsProps> = observer(
   function OsDetails(_props) {
     const navigation = _props.navigation;
-    const { ordersStore, loadingProgressStore } = useStores();
+    const {
+      authenticationStore: { isCurrentLocation },
+      ordersStore,
+      loadingProgressStore,
+    } = useStores();
 
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState<{ visible: boolean; message: string }>({
+      visible: false,
+      message: "",
+    });
     const [containerLayout, setContainerLayout] =
       useState<ContainerLayoutOsDetailsEnum>(
         ContainerLayoutOsDetailsEnum.Create,
@@ -346,7 +353,12 @@ export const OsDetails: FC<OsDetailsProps> = observer(
     };
 
     const goBack = () => {
-      navigation.goBack();
+      if (ordersStore.selectedDay) {
+        navigation.navigate("History");
+        return;
+      }
+
+      navigation.navigate("Os");
     };
 
     const createOS = async () => {
@@ -356,19 +368,21 @@ export const OsDetails: FC<OsDetailsProps> = observer(
         const params: OrderRequest = {
           serviceDescription: getValues("serviceDescription"),
           companyName: getValues("companyName"),
-          companyAddressLatitude: -22.897140306896276,
-          companyAddressLongitude: -47.06153484719727,
+          companyAddressLatitude: isCurrentLocation.recordedLatitude,
+          companyAddressLongitude: isCurrentLocation.recordedLongitude,
           schedulingDate: "2024-08-23",
         };
 
         const response = await ordersApi.createOrder({ ...params });
 
         if (response.kind !== KindEnum.OK) {
-          setError(!error);
+          const { message } = response;
+
+          setError({ visible: true, message });
         }
 
         if (response.kind === KindEnum.OK) {
-          const { result } = response;
+          // const { result } = response;
 
           setSuccess(!success);
         }
@@ -383,16 +397,20 @@ export const OsDetails: FC<OsDetailsProps> = observer(
 
         const params: OrderUpdateRequest = {
           startDatetime: startTime,
-          recordedLatitude: -22.897140306896276,
-          recordedLongitude: -47.06153484719727,
+          recordedLatitude: isCurrentLocation.recordedLatitude,
+          recordedLongitude: isCurrentLocation.recordedLongitude,
         };
+
+        console.log(params);
 
         const response = await ordersApi.startOrder(ordersStore.id, {
           ...params,
         });
 
         if (response.kind !== KindEnum.OK) {
-          setError(!error);
+          const { message } = response;
+
+          setError({ visible: true, message });
         }
 
         if (response.kind === KindEnum.OK) {
@@ -410,8 +428,8 @@ export const OsDetails: FC<OsDetailsProps> = observer(
         const params: OrderUpdateRequest = {
           endDatetime: endTime,
           comment: getValues("comment"),
-          recordedLatitude: -22.897140306896276,
-          recordedLongitude: -47.06153484719727,
+          recordedLatitude: isCurrentLocation.recordedLatitude,
+          recordedLongitude: isCurrentLocation.recordedLongitude,
         };
 
         const response = await ordersApi.endOrder(ordersStore.id, {
@@ -419,7 +437,9 @@ export const OsDetails: FC<OsDetailsProps> = observer(
         });
 
         if (response.kind !== KindEnum.OK) {
-          setError(!error);
+          const { message } = response;
+
+          setError({ visible: true, message });
         }
 
         if (response.kind === KindEnum.OK) {
@@ -469,12 +489,15 @@ export const OsDetails: FC<OsDetailsProps> = observer(
     useFocusEffect(
       useCallback(() => {
         fetchData().then();
+        console.log(isCurrentLocation.recordedLatitude);
       }, []),
     );
 
     return (
-      <Screen refreshing={false}>
-        <VStack flex={1}>{renderContainerLayout()}</VStack>
+      <>
+        <Screen refreshing={false}>
+          <VStack flex={1}>{renderContainerLayout()}</VStack>
+        </Screen>
 
         <CustomModal
           visible={success}
@@ -484,12 +507,12 @@ export const OsDetails: FC<OsDetailsProps> = observer(
         />
 
         <CustomModal
-          visible={error}
-          description="Houve um erro ao cadastrar a OS"
+          visible={error.visible}
+          description={error.message}
           preset="error"
-          cancelCallback={() => setError(!error)}
+          cancelCallback={() => setError({ visible: false, message: "" })}
         />
-      </Screen>
+      </>
     );
   },
 );

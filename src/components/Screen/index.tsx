@@ -20,7 +20,7 @@ interface ScreenProps {
   /**
    * Called when the view starts refreshing.
    */
-  onRefresh?: () => void | undefined;
+  onRefresh?: () => () => Promise<void>;
 }
 
 export const Screen = ({ children, refreshing, onRefresh }: ScreenProps) => {

@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
 import { withSetPropAction } from "@/stores/helpers/withSetPropAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "@react-native-google-signin/google-signin";
+import Geolocation from "@react-native-community/geolocation";
 
 const AUTH_DATA = "APP_TIMESHEET_AUTH_DATA";
 
@@ -39,6 +40,8 @@ export const AuthenticationStoreModel = types
     name: "",
     photo: "",
     email: "",
+    recordedLatitude: 0,
+    recordedLongitude: 0,
   })
   .actions(withSetPropAction)
   .views((store) => ({
@@ -50,6 +53,12 @@ export const AuthenticationStoreModel = types
     },
     get isPhoto() {
       return store.photo;
+    },
+    get isCurrentLocation() {
+      return {
+        recordedLatitude: store.recordedLatitude,
+        recordedLongitude: store.recordedLongitude,
+      };
     },
   }))
   .actions((store) => ({
@@ -87,6 +96,23 @@ export const AuthenticationStoreModel = types
         store.setProp("photo", data.photo);
         store.setProp("email", data.email);
       }
+    },
+
+    async getCurrentPosition() {
+      Geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+
+          store.setProp("recordedLatitude", latitude);
+          store.setProp("recordedLongitude", longitude);
+        },
+        (error) =>
+          console.log(
+            "Erro ao carregar a localização atual",
+            JSON.stringify(error),
+          ),
+        { enableHighAccuracy: true },
+      );
     },
   }));
 

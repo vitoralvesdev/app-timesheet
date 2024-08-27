@@ -13,7 +13,15 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.apptimesheet"
+      "bundleIdentifier": "com.apptimesheet",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Este aplicativo precisa acessar sua localização enquanto estiver em uso.",
+        "CFBundleAllowMixedLocalizations": true,
+        "CFBundleLocalizations": [
+          "pt-BR"
+        ],
+        "CFBundleDevelopmentRegion": "pt-BR"
+      }
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -21,7 +29,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.apptimesheet"
+      "package": "com.apptimesheet",
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

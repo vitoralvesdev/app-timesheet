@@ -6,12 +6,15 @@ import React, { useEffect, useState } from "react";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { healthApi, KindEnum } from "@/services";
 import { CustomModal } from "@/components";
+import { useStores } from "@/stores";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [readApi, setReadApi] = useState(false);
   const [error, setError] = useState(false);
+
+  const { authenticationStore } = useStores();
 
   const closeSplash = async () => {
     await SplashScreen.hideAsync();
@@ -45,7 +48,11 @@ export default function App() {
 
   useEffect(() => {
     configGoogleSignIn();
-    getHealthApi().then();
+    authenticationStore.getCurrentPosition().then();
+  }, []);
+
+  useEffect(() => {
+    configGoogleSignIn();
   }, []);
 
   return (

@@ -10,10 +10,10 @@ import {
 } from "@/components";
 import { Controller, useForm } from "react-hook-form";
 import { SearchSvg } from "@/svg";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { observer } from "mobx-react-lite";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
 import {
   KindEnum,
@@ -50,7 +50,6 @@ export const Os = observer(() => {
   const navigation = useNavigation<AppNavigatorRoutesProps>();
   const { ordersStore, loadingProgressStore } = useStores();
 
-  const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
   const [toggle, setToggle] = useState(
     StatusLabel.get(StatusEnum.All) as string,
@@ -87,12 +86,6 @@ export const Os = observer(() => {
     );
   };
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await fetchData();
-    setRefreshing(false);
-  }, []);
-
   const fetchData = async () => {
     try {
       loadingProgressStore.setIsBusy(true);
@@ -121,17 +114,20 @@ export const Os = observer(() => {
   const goOsDetails = (item?: OrderResponse) => {
     if (item) {
       ordersStore.setProp("id", item.id);
+      ordersStore.setProp("selectedDay", "");
     }
 
     navigation.navigate("OsDetails");
   };
 
-  useEffect(() => {
-    fetchData().then();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData().then();
+    }, []),
+  );
 
   return (
-    <Screen refreshing={refreshing} onRefresh={onRefresh}>
+    <Screen refreshing={false}>
       <VStack flex={1}>
         <VStack margin={5} style={{ marginBottom: spacing.md }}>
           <Header title="OS" renderButtonBack={() => null} />

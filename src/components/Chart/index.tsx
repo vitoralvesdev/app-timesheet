@@ -1,8 +1,22 @@
 import { Dimensions } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { spacing, THEME } from "@/theme";
+import { useEffect, useState } from "react";
+import {
+  KindEnum,
+  ordersApi,
+  OrdersGroupingPeriodEnum,
+  OrdersQuantityRequest,
+  OrdersStatusEnum,
+} from "@/services";
+import { rangeDate } from "@/helpers/rangeDate";
+import { useStores } from "@/stores";
 
-export const Chart = () => {
+interface ChartProps {
+  period: OrdersGroupingPeriodEnum;
+}
+
+export const Chart = ({ period }: ChartProps) => {
   const data = [
     {
       value: 15,

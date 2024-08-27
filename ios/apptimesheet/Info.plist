@@ -70,5 +70,9 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Seu aplicativo precisa acessar sua localização para fornecer melhores funcionalidades relacionadas à localização.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Seu aplicativo precisa acessar sua localização sempre para fornecer melhores funcionalidades relacionadas à localização.</string>
 </dict>
 </plist>

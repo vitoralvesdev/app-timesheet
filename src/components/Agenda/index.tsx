@@ -48,8 +48,6 @@ export const Agenda = ({ data, onDayPress }: AgendaProps) => {
 
       const hours = `${totalHours.hours}:${totalHours.minutes}:${totalHours.seconds}`;
 
-      console.log(item);
-
       if (acc[createdAt]) {
         acc[createdAt].push({ name: companyName, comment: endComment, hours });
       } else {
