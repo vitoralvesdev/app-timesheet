@@ -9,6 +9,10 @@ type props = {
   value?: string | undefined;
   onChange?: (value: string) => void;
   numberOfLines?: number;
+  /**
+   * Optional style to input
+   */
+  containerStyle?: ViewStyle;
 };
 
 export const TextField = ({
@@ -17,12 +21,13 @@ export const TextField = ({
   value,
   onChange,
   numberOfLines,
+  containerStyle,
   ...rest
 }: props) => {
   return (
     <Input
       value={value}
-      style={$baseStyle}
+      style={{ ...$baseStyle, ...containerStyle }}
       flex={1}
       placeholder={placeholder ?? ""}
       fontSize={spacing.patterns.text}
@@ -33,7 +38,7 @@ export const TextField = ({
       }}
       borderRadius={10}
       borderWidth={1}
-      leftElement={<Box paddingLeft={4}>{leftIcon}</Box>}
+      leftElement={leftIcon && <Box paddingLeft={4}>{leftIcon}</Box>}
       onChangeText={onChange}
       multiline={!!numberOfLines}
       numberOfLines={numberOfLines}
@@ -44,5 +49,5 @@ export const TextField = ({
 };
 
 const $baseStyle: ViewStyle = {
-  marginVertical: 10,
+  marginVertical: spacing.xs,
 };

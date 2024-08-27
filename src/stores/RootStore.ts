@@ -1,6 +1,7 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree";
 import { AuthenticationStoreModel } from "@/stores/AuthenticationStore";
 import { OrdersStoreModel } from "@/stores/OrdersStore";
+import { LoadingProgressModel } from "@/stores/LoadingProgressStore";
 
 /**
  * A RootStore model.
@@ -8,6 +9,7 @@ import { OrdersStoreModel } from "@/stores/OrdersStore";
 export const RootStoreModel = types.model("RootStore").props({
   authenticationStore: types.optional(AuthenticationStoreModel, {}),
   ordersStore: types.optional(OrdersStoreModel, {}),
+  loadingProgressStore: types.optional(LoadingProgressModel, {}),
 });
 
 /**

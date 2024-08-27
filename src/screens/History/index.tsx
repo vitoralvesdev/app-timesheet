@@ -1,30 +1,36 @@
 import { Agenda, Screen } from "@/components";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { KindEnum, ordersApi, OrdersRequest } from "@/services";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
 import { useStores } from "@/stores";
 import { DateData } from "react-native-calendars";
 
 export const History = observer(() => {
   const navigation = useNavigation<AppNavigatorRoutesProps>();
-  const { ordersStore } = useStores();
+  const { ordersStore, loadingProgressStore } = useStores();
 
   const [orders, setOrders] = useState([]);
 
   const fetchData = async () => {
-    const params: OrdersRequest = {
-      page: 1,
-      pageSize: 10,
-    };
+    try {
+      loadingProgressStore.setIsBusy(true);
 
-    const response = await ordersApi.getOrders({ ...params });
+      const params: OrdersRequest = {
+        page: 1,
+        pageSize: 10,
+      };
 
-    if (response.kind === KindEnum.OK) {
-      const { result } = response;
+      const response = await ordersApi.getOrders({ ...params });
 
-      setOrders(result.items);
+      if (response.kind === KindEnum.OK) {
+        const { result } = response;
+
+        setOrders(result.items);
+      }
+    } finally {
+      loadingProgressStore.setIsBusy(false);
     }
   };
 
@@ -35,9 +41,11 @@ export const History = observer(() => {
     navigation.navigate("OsDetails");
   };
 
-  useEffect(() => {
-    fetchData().then();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData().then();
+    }, []),
+  );
 
   return (
     <Screen refreshing={false}>

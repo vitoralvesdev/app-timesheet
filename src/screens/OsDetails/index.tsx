@@ -10,9 +10,9 @@ import {
   Screen,
   CurrentDate,
 } from "@/components";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
-import React, { useCallback, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { AppStackScreenProps } from "@/navigators/app.routes";
+import React, { FC, useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   KindEnum,
@@ -24,6 +24,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { useStores } from "@/stores";
 import { StatusEnum } from "@/screens/Os";
+import { getTextFieldOnValidation } from "@/utils/validate";
 
 interface IFormValues {
   companyName: string;
@@ -37,401 +38,458 @@ export enum ContainerLayoutOsDetailsEnum {
   Finish = 2,
 }
 
-export const OsDetails = observer(() => {
-  const navigation = useNavigation<AppNavigatorRoutesProps>();
-  const { ordersStore } = useStores();
+interface OsDetailsProps extends AppStackScreenProps<"OsDetails"> {}
 
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-  const [containerLayout, setContainerLayout] =
-    useState<ContainerLayoutOsDetailsEnum>(ContainerLayoutOsDetailsEnum.Create);
-  const [startTime, setStartTime] = useState<Date>(null);
-  const [endTime, setEndTime] = useState<Date>(null);
-  const [order, setOrder] = useState<OrderResponse>(null);
+export const OsDetails: FC<OsDetailsProps> = observer(
+  function OsDetails(_props) {
+    const navigation = _props.navigation;
+    const { ordersStore, loadingProgressStore } = useStores();
 
-  const { control, getValues } = useForm<IFormValues>({
-    mode: "onChange",
-  });
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [containerLayout, setContainerLayout] =
+      useState<ContainerLayoutOsDetailsEnum>(
+        ContainerLayoutOsDetailsEnum.Create,
+      );
+    const [startTime, setStartTime] = useState<Date>(null);
+    const [endTime, setEndTime] = useState<Date>(null);
+    const [order, setOrder] = useState<OrderResponse>(null);
 
-  const containerLayoutCreate = () => {
-    return (
-      <>
-        <VStack marginX={5} marginY={5}>
-          <Header
-            title="Nova OS"
-            renderButtonBack={() => <ButtonBack onPress={goOS} />}
-          />
-        </VStack>
+    const {
+      control,
+      formState: { errors, isValid },
+      getValues,
+    } = useForm<IFormValues>({
+      mode: "onChange",
+    });
 
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Nome
-          </Text>
-
-          <HStack mb={spacing.xs}>
-            <Controller
-              name="companyName"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextField value={value} onChange={(v) => onChange(v)} />
-              )}
-            />
-          </HStack>
-        </VStack>
-
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Data
-          </Text>
-
-          <HStack mb={spacing.xs}>
-            <CurrentDate date={ordersStore.selectedDay} />
-          </HStack>
-        </VStack>
-
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Observação
-          </Text>
-
-          <HStack mb={spacing.xs}>
-            <Controller
-              name="serviceDescription"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextField
-                  placeholder="Problema resolvido"
-                  value={value}
-                  onChange={(v) => onChange(v)}
-                  numberOfLines={3}
-                />
-              )}
-            />
-          </HStack>
-        </VStack>
-
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Horário
-          </Text>
-        </VStack>
-
-        <VStack marginX={5}>
-          <Button text="Criar OS" onPress={() => createOS().then()} />
-        </VStack>
-      </>
-    );
-  };
-
-  const containerLayoutStart = () => {
-    return (
-      <>
-        <VStack marginX={5} marginY={5}>
-          <Header
-            title="Iniciar OS"
-            renderButtonBack={() => <ButtonBack onPress={goOS} />}
-          />
-        </VStack>
-
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Nome
-          </Text>
-
-          <HStack mb={spacing.xs}>
-            <Controller
-              name="companyName"
-              control={control}
-              render={() => <TextField value={order.companyName} />}
-            />
-          </HStack>
-        </VStack>
-
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Observação
-          </Text>
-
-          <HStack mb={spacing.xs}>
-            <Controller
-              name="serviceDescription"
-              control={control}
-              render={() => (
-                <TextField
-                  placeholder="Problema resolvido"
-                  value={order.serviceDescription}
-                  numberOfLines={3}
-                />
-              )}
-            />
-          </HStack>
-        </VStack>
-
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Hora
-          </Text>
-
-          <VStack mb={spacing.xs}>
-            <Clock
-              currentTime={order.createdAt}
-              onChange={(time) => setStartTime(time)}
+    const containerLayoutCreate = () => {
+      return (
+        <>
+          <VStack marginX={5} marginY={5}>
+            <Header
+              title="Nova OS"
+              renderButtonBack={() => <ButtonBack onPress={goBack} />}
             />
           </VStack>
-        </VStack>
 
-        <VStack marginX={5}>
-          <Button text="Iniciar OS" onPress={() => startOS().then()} />
-        </VStack>
-      </>
-    );
-  };
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Nome
+            </Text>
 
-  const containerLayoutFinish = () => {
-    return (
-      <>
-        <VStack marginX={5} marginY={5}>
-          <Header
-            title="Finalizar OS"
-            renderButtonBack={() => <ButtonBack onPress={goOS} />}
-          />
-        </VStack>
-
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Nome
-          </Text>
-
-          <HStack mb={spacing.xs}>
-            <Controller
-              name="companyName"
-              control={control}
-              render={() => <TextField value={order.companyName} />}
-            />
-          </HStack>
-        </VStack>
-
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Observação
-          </Text>
-
-          <HStack mb={spacing.xs}>
-            <Controller
-              name="comment"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextField
-                  placeholder="Problema resolvido"
-                  value={value}
-                  numberOfLines={3}
-                  onChange={(v) => onChange(v)}
-                />
-              )}
-            />
-          </HStack>
-        </VStack>
-
-        <VStack marginX={5}>
-          <Text
-            mb={spacing.xxs}
-            color="gray.500"
-            fontSize={spacing.patterns.text}
-            fontWeight="bold"
-          >
-            Hora
-          </Text>
-
-          <VStack mb={spacing.xs}>
-            <Clock onChange={(time) => setEndTime(time)} />
+            <HStack mb={spacing.xs}>
+              <Controller
+                name="companyName"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    value={value}
+                    onChange={(v) => onChange(v)}
+                    containerStyle={getTextFieldOnValidation(
+                      errors.companyName,
+                    )}
+                  />
+                )}
+              />
+            </HStack>
           </VStack>
-        </VStack>
 
-        <VStack marginX={5}>
-          <Button text="Finalizar OS" onPress={() => endOS().then()} />
-        </VStack>
-      </>
-    );
-  };
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Data
+            </Text>
 
-  const renderContainerLayout = () => {
-    switch (containerLayout) {
-      case ContainerLayoutOsDetailsEnum.Create:
-        return containerLayoutCreate();
-      case ContainerLayoutOsDetailsEnum.Start:
-        return containerLayoutStart();
-      case ContainerLayoutOsDetailsEnum.Finish:
-        return containerLayoutFinish();
-      default:
-        return null;
-    }
-  };
+            <HStack mb={spacing.xs}>
+              <CurrentDate date={ordersStore.selectedDay} />
+            </HStack>
+          </VStack>
 
-  const goHistory = () => {
-    navigation.navigate("History");
-  };
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Observação
+            </Text>
 
-  const goOS = () => {
-    navigation.navigate("Os");
-  };
+            <HStack mb={spacing.xs}>
+              <Controller
+                name="serviceDescription"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    placeholder="Problema resolvido"
+                    value={value}
+                    onChange={(v) => onChange(v)}
+                    numberOfLines={3}
+                    blurOnSubmit={true}
+                    containerStyle={getTextFieldOnValidation(
+                      errors.serviceDescription,
+                    )}
+                  />
+                )}
+              />
+            </HStack>
+          </VStack>
 
-  const createOS = async () => {
-    const params: OrderRequest = {
-      serviceDescription: getValues("serviceDescription"),
-      companyName: getValues("companyName"),
-      companyAddressLatitude: -22.897140306896276,
-      companyAddressLongitude: -47.06153484719727,
-      schedulingDate: "2024-08-23",
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Horário
+            </Text>
+          </VStack>
+
+          <VStack marginX={5}>
+            <Button
+              text="Criar OS"
+              onPress={() => createOS().then()}
+              isDisabled={!isValid}
+            />
+          </VStack>
+        </>
+      );
     };
 
-    const response = await ordersApi.createOrder({ ...params });
+    const containerLayoutStart = () => {
+      return (
+        <>
+          <VStack marginX={5} marginY={5}>
+            <Header
+              title="Iniciar OS"
+              renderButtonBack={() => <ButtonBack onPress={goBack} />}
+            />
+          </VStack>
 
-    if (response.kind !== KindEnum.OK) {
-      setError(!error);
-    }
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Nome
+            </Text>
 
-    if (response.kind === KindEnum.OK) {
-      const { result } = response;
+            <HStack mb={spacing.xs}>
+              <Controller
+                name="companyName"
+                control={control}
+                render={() => (
+                  <TextField value={order.companyName} isDisabled />
+                )}
+              />
+            </HStack>
+          </VStack>
 
-      setSuccess(!success);
-    }
-  };
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Observação
+            </Text>
 
-  const startOS = async () => {
-    const params: OrderUpdateRequest = {
-      startDatetime: startTime,
-      recordedLatitude: -22.897140306896276,
-      recordedLongitude: -47.06153484719727,
+            <HStack mb={spacing.xs}>
+              <Controller
+                name="serviceDescription"
+                control={control}
+                render={() => (
+                  <TextField
+                    placeholder="Problema resolvido"
+                    value={order.serviceDescription}
+                    numberOfLines={3}
+                    blurOnSubmit={true}
+                    isDisabled
+                  />
+                )}
+              />
+            </HStack>
+          </VStack>
+
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Hora
+            </Text>
+
+            <VStack mb={spacing.xs}>
+              <Clock
+                currentTime={order.createdAt}
+                onChange={(time) => setStartTime(time)}
+              />
+            </VStack>
+          </VStack>
+
+          <VStack marginX={5}>
+            <Button text="Iniciar OS" onPress={() => startOS().then()} />
+          </VStack>
+        </>
+      );
     };
 
-    const response = await ordersApi.startOrder(ordersStore.id, { ...params });
+    const containerLayoutFinish = () => {
+      return (
+        <>
+          <VStack marginX={5} marginY={5}>
+            <Header
+              title="Finalizar OS"
+              renderButtonBack={() => <ButtonBack onPress={goBack} />}
+            />
+          </VStack>
 
-    if (response.kind !== KindEnum.OK) {
-      setError(!error);
-    }
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Nome
+            </Text>
 
-    if (response.kind === KindEnum.OK) {
-      setSuccess(!success);
-    }
-  };
+            <HStack mb={spacing.xs}>
+              <Controller
+                name="companyName"
+                control={control}
+                render={() => (
+                  <TextField value={order.companyName} isDisabled />
+                )}
+              />
+            </HStack>
+          </VStack>
 
-  const endOS = async () => {
-    const params: OrderUpdateRequest = {
-      endDatetime: endTime,
-      comment: getValues("comment"),
-      recordedLatitude: -22.897140306896276,
-      recordedLongitude: -47.06153484719727,
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Observação
+            </Text>
+
+            <HStack mb={spacing.xs}>
+              <Controller
+                name="comment"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    placeholder="Ocorreu tudo conforme o esperado"
+                    value={value}
+                    numberOfLines={3}
+                    onChange={(v) => onChange(v)}
+                    blurOnSubmit={true}
+                  />
+                )}
+              />
+            </HStack>
+          </VStack>
+
+          <VStack marginX={5}>
+            <Text
+              mb={spacing.xxs}
+              color="gray.500"
+              fontSize={spacing.patterns.text}
+              fontWeight="bold"
+            >
+              Hora
+            </Text>
+
+            <VStack mb={spacing.xs}>
+              <Clock onChange={(time) => setEndTime(time)} />
+            </VStack>
+          </VStack>
+
+          <VStack marginX={5}>
+            <Button text="Finalizar OS" onPress={() => endOS().then()} />
+          </VStack>
+        </>
+      );
     };
 
-    const response = await ordersApi.endOrder(ordersStore.id, { ...params });
-
-    if (response.kind !== KindEnum.OK) {
-      setError(!error);
-    }
-
-    if (response.kind === KindEnum.OK) {
-      setSuccess(!success);
-    }
-  };
-
-  const fetchData = async () => {
-    const params: OrderRequest = {
-      id: ordersStore.id,
-    };
-
-    const response = await ordersApi.getOrder({ ...params });
-
-    if (response.kind !== KindEnum.OK) {
-      setContainerLayout(ContainerLayoutOsDetailsEnum.Create);
-    }
-
-    if (response.kind === KindEnum.OK) {
-      const { result } = response;
-
-      setOrder(result);
-
-      switch (result.status) {
-        case StatusEnum.Open:
-          setContainerLayout(ContainerLayoutOsDetailsEnum.Start);
-          break;
-        case StatusEnum.Progress:
-          setContainerLayout(ContainerLayoutOsDetailsEnum.Finish);
-          break;
+    const renderContainerLayout = () => {
+      switch (containerLayout) {
+        case ContainerLayoutOsDetailsEnum.Create:
+          return containerLayoutCreate();
+        case ContainerLayoutOsDetailsEnum.Start:
+          return containerLayoutStart();
+        case ContainerLayoutOsDetailsEnum.Finish:
+          return containerLayoutFinish();
         default:
-          setContainerLayout(ContainerLayoutOsDetailsEnum.Create);
-          break;
+          return null;
       }
-    }
-  };
+    };
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchData().then();
-    }, []),
-  );
+    const goBack = () => {
+      navigation.goBack();
+    };
 
-  return (
-    <Screen refreshing={false}>
-      <VStack flex={1}>{renderContainerLayout()}</VStack>
+    const createOS = async () => {
+      try {
+        loadingProgressStore.setIsBusy(true);
 
-      <CustomModal
-        visible={success}
-        description="Apontamento efetuado"
-        preset="success"
-        closeCallback={goOS}
-      />
+        const params: OrderRequest = {
+          serviceDescription: getValues("serviceDescription"),
+          companyName: getValues("companyName"),
+          companyAddressLatitude: -22.897140306896276,
+          companyAddressLongitude: -47.06153484719727,
+          schedulingDate: "2024-08-23",
+        };
 
-      <CustomModal
-        visible={error}
-        description="Houve um erro ao cadastrar a OS"
-        preset="error"
-        cancelCallback={() => setError(!error)}
-      />
-    </Screen>
-  );
-});
+        const response = await ordersApi.createOrder({ ...params });
+
+        if (response.kind !== KindEnum.OK) {
+          setError(!error);
+        }
+
+        if (response.kind === KindEnum.OK) {
+          const { result } = response;
+
+          setSuccess(!success);
+        }
+      } finally {
+        loadingProgressStore.setIsBusy(false);
+      }
+    };
+
+    const startOS = async () => {
+      try {
+        loadingProgressStore.setIsBusy(true);
+
+        const params: OrderUpdateRequest = {
+          startDatetime: startTime,
+          recordedLatitude: -22.897140306896276,
+          recordedLongitude: -47.06153484719727,
+        };
+
+        const response = await ordersApi.startOrder(ordersStore.id, {
+          ...params,
+        });
+
+        if (response.kind !== KindEnum.OK) {
+          setError(!error);
+        }
+
+        if (response.kind === KindEnum.OK) {
+          setSuccess(!success);
+        }
+      } finally {
+        loadingProgressStore.setIsBusy(false);
+      }
+    };
+
+    const endOS = async () => {
+      try {
+        loadingProgressStore.setIsBusy(true);
+
+        const params: OrderUpdateRequest = {
+          endDatetime: endTime,
+          comment: getValues("comment"),
+          recordedLatitude: -22.897140306896276,
+          recordedLongitude: -47.06153484719727,
+        };
+
+        const response = await ordersApi.endOrder(ordersStore.id, {
+          ...params,
+        });
+
+        if (response.kind !== KindEnum.OK) {
+          setError(!error);
+        }
+
+        if (response.kind === KindEnum.OK) {
+          setSuccess(!success);
+        }
+      } finally {
+        loadingProgressStore.setIsBusy(false);
+      }
+    };
+
+    const fetchData = async () => {
+      try {
+        loadingProgressStore.setIsBusy(true);
+
+        const params: OrderRequest = {
+          id: ordersStore.id,
+        };
+
+        const response = await ordersApi.getOrder({ ...params });
+
+        if (response.kind !== KindEnum.OK) {
+          setContainerLayout(ContainerLayoutOsDetailsEnum.Create);
+        }
+
+        if (response.kind === KindEnum.OK) {
+          const { result } = response;
+
+          setOrder(result);
+
+          switch (result.status) {
+            case StatusEnum.Open:
+              setContainerLayout(ContainerLayoutOsDetailsEnum.Start);
+              break;
+            case StatusEnum.Progress:
+              setContainerLayout(ContainerLayoutOsDetailsEnum.Finish);
+              break;
+            default:
+              setContainerLayout(ContainerLayoutOsDetailsEnum.Create);
+              break;
+          }
+        }
+      } finally {
+        loadingProgressStore.setIsBusy(false);
+      }
+    };
+
+    useFocusEffect(
+      useCallback(() => {
+        fetchData().then();
+      }, []),
+    );
+
+    return (
+      <Screen refreshing={false}>
+        <VStack flex={1}>{renderContainerLayout()}</VStack>
+
+        <CustomModal
+          visible={success}
+          description="Apontamento efetuado"
+          preset="success"
+          closeCallback={goBack}
+        />
+
+        <CustomModal
+          visible={error}
+          description="Houve um erro ao cadastrar a OS"
+          preset="error"
+          cancelCallback={() => setError(!error)}
+        />
+      </Screen>
+    );
+  },
+);

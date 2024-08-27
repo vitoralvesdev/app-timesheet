@@ -48,7 +48,7 @@ export const StatusLabel = new Map([
 
 export const Os = observer(() => {
   const navigation = useNavigation<AppNavigatorRoutesProps>();
-  const { ordersStore } = useStores();
+  const { ordersStore, loadingProgressStore } = useStores();
 
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
@@ -94,21 +94,27 @@ export const Os = observer(() => {
   }, []);
 
   const fetchData = async () => {
-    const params: OrdersRequest = {
-      page: 1,
-      pageSize: 10,
-    };
+    try {
+      loadingProgressStore.setIsBusy(true);
 
-    const response = await ordersApi.getOrders({ ...params });
+      const params: OrdersRequest = {
+        page: 1,
+        pageSize: 10,
+      };
 
-    if (response.kind === KindEnum.OK) {
-      const { result } = response;
+      const response = await ordersApi.getOrders({ ...params });
 
-      const finishedItems = result.items.filter(
-        (item) => item.status !== OrdersStatusEnum.FINISHED,
-      );
+      if (response.kind === KindEnum.OK) {
+        const { result } = response;
 
-      setOrders(finishedItems);
+        const finishedItems = result.items.filter(
+          (item) => item.status !== OrdersStatusEnum.FINISHED,
+        );
+
+        setOrders(finishedItems);
+      }
+    } finally {
+      loadingProgressStore.setIsBusy(false);
     }
   };
 

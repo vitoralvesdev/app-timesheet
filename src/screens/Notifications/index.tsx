@@ -1,14 +1,8 @@
-import {
-  Box,
-  HStack,
-  ScrollView,
-  Text,
-  useSafeArea,
-  VStack,
-} from "native-base";
-import { Button, Header } from "@/components";
+import { Box, HStack, ScrollView, Text, VStack } from "native-base";
+import { Button, Header, Screen } from "@/components";
 import { spacing } from "@/theme";
 import { TouchableOpacity } from "react-native";
+import { observer } from "mobx-react-lite";
 
 const DATA = [
   {
@@ -38,13 +32,9 @@ const DATA = [
   },
 ];
 
-export const Notifications = () => {
-  const safeAreaProps = useSafeArea({
-    safeAreaTop: true,
-  });
-
+export const Notifications = observer(() => {
   return (
-    <Box flex={1} {...safeAreaProps}>
+    <Screen refreshing={false}>
       <VStack margin={5} style={{ marginBottom: spacing.md }}>
         <Header title="Notificações" />
       </VStack>
@@ -92,6 +82,6 @@ export const Notifications = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-    </Box>
+    </Screen>
   );
-};
+});

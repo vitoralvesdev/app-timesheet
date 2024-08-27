@@ -44,14 +44,16 @@ export const Agenda = ({ data, onDayPress }: AgendaProps) => {
     );
 
     const groupedData = finishedItems.reduce((acc, item) => {
-      const { schedulingDate, companyName, totalHours } = item;
+      const { createdAt, companyName, endComment, totalHours } = item;
 
       const hours = `${totalHours.hours}:${totalHours.minutes}:${totalHours.seconds}`;
 
-      if (acc[schedulingDate]) {
-        acc[schedulingDate].push({ name: companyName, hours });
+      console.log(item);
+
+      if (acc[createdAt]) {
+        acc[createdAt].push({ name: companyName, comment: endComment, hours });
       } else {
-        acc[schedulingDate] = [{ name: companyName, hours }];
+        acc[createdAt] = [{ name: companyName, comment: endComment, hours }];
       }
 
       return acc;
@@ -74,14 +76,19 @@ export const Agenda = ({ data, onDayPress }: AgendaProps) => {
   };
 
   const renderItem = (item: any) => {
-    const { name, hours } = item.item;
+    const { name, comment, hours } = item.item;
 
     return (
       <VStack marginX={5}>
         <HStack style={$itemStyle} marginBottom={spacing.xxxs}>
-          <Text fontSize={spacing.md} color="primary.200">
-            {name}
-          </Text>
+          <VStack>
+            <Text fontSize={spacing.md} color="primary.200">
+              {name}
+            </Text>
+            <Text fontSize={spacing.md} color="gray.200">
+              {comment}
+            </Text>
+          </VStack>
           <Text fontSize={spacing.md} color="primary.200">
             {hours}
           </Text>
@@ -139,6 +146,7 @@ const $headerStyle: ViewStyle = {
 };
 
 const $itemStyle: ViewStyle = {
+  alignItems: "center",
   backgroundColor: THEME.colors.purple[600],
   borderColor: THEME.colors.purple[600],
   borderRadius: 20,

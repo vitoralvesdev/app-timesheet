@@ -29,11 +29,6 @@ type props = {
    * item to handle button click
    */
   onPress?: TouchableOpacityProps["onPress"];
-
-  /**
-   * An item to disabled button
-   */
-  disabled?: boolean;
 };
 
 export const Button = ({
@@ -42,7 +37,7 @@ export const Button = ({
   leftIcon,
   rightIcon,
   onPress,
-  disabled,
+  ...rest
 }: props) => {
   const renderStyle = () => {
     if (preset === "filter") {
@@ -67,7 +62,7 @@ export const Button = ({
       style={renderStyle()}
       text={text}
       onPress={onPress}
-      disabled={disabled}
+      {...rest}
     >
       <TouchableOpacity onPress={onPress}>
         {preset === "filter" ? (

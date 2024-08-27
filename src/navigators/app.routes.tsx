@@ -14,8 +14,9 @@ import {
 import { spacing, THEME } from "@/theme";
 import { ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type AppRoutes = {
+type AppRoutesProps = {
   Home: undefined;
   History: undefined;
   Os: undefined;
@@ -23,9 +24,12 @@ type AppRoutes = {
   Notifications: undefined;
 };
 
-export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
+export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutesProps>;
 
-const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
+export type AppStackScreenProps<T extends keyof AppRoutesProps> =
+  NativeStackScreenProps<AppRoutesProps, T>;
+
+const { Navigator, Screen } = createBottomTabNavigator<AppRoutesProps>();
 
 export function AppRoutes() {
   const { bottom } = useSafeAreaInsets();

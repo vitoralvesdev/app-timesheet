@@ -13,6 +13,8 @@ import { CustomModal } from "@/components/Modals/CustomModal";
 import { HomeModal } from "@/components/Modals/HomeModal";
 import { Filter } from "./Filter/index";
 import { Header } from "./Header/index";
+import { LoadingProgress } from "./LoadingProgress/index";
+import { NetworkState } from "./NetworkState/index";
 import { NoContent } from "./NoContent/index";
 import { Screen } from "./Screen/index";
 import { User } from "./User/index";
@@ -36,6 +38,8 @@ export {
   HomeModal,
   Filter,
   Header,
+  LoadingProgress,
+  NetworkState,
   NoContent,
   Screen,
   User,
