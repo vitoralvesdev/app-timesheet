@@ -21,6 +21,9 @@
           "pt-BR"
         ],
         "CFBundleDevelopmentRegion": "pt-BR"
+      },
+      "entitlements": {
+        "aps-environment": "production"
       }
     },
     "android": {
@@ -41,7 +44,20 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "@react-native-firebase/app",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "newArchEnabled": false,
+            "useFrameworks": "static"
+          },
+          "android": {
+            "newArchEnabled": false
+          }
+        }
+      ]
     ],
     "extra": {
       "eas": {

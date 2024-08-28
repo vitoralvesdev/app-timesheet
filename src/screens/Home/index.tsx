@@ -1,3 +1,4 @@
+import React, { useCallback, useState } from "react";
 import { Box, HStack, VStack } from "native-base";
 import {
   Card,
@@ -10,7 +11,6 @@ import {
 } from "@/components";
 import { spacing } from "@/theme";
 import { DownloadSvg, UploadSvg } from "@/svg";
-import React, { useCallback, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useStores } from "src/stores";
 import { observer } from "mobx-react-lite";
@@ -22,7 +22,6 @@ import {
   OrdersQuantityRequest,
   OrdersStatusEnum,
 } from "@/services";
-import { dateToText } from "@/helpers/formatDate";
 import { rangeDate } from "@/helpers/rangeDate";
 
 const HAS_HOME_MODAL = "APP_TIMESHEET_HAS_HOME_MODAL";
@@ -36,6 +35,7 @@ export const Home = observer(() => {
   });
   const [modal, setModal] = useState(false);
   const [openOs, setOpenOs] = useState(0);
+  const [progressOs, setProgressOs] = useState(0);
   const [finishedOs, setFinishedOs] = useState(0);
 
   const [orderGroupingPeriod, setOrderGroupingPeriod] =
@@ -79,35 +79,35 @@ export const Home = observer(() => {
           status,
         };
 
-        console.log("request==>", params);
-
         return await ordersApi.getOrdersQuantity({ ...params });
       });
 
       const responses = await Promise.all(promises);
 
+      let openQuantity = 0;
+      let progressQuantity = 0;
+      let finishedQuantity = 0;
+
       responses.forEach((response, index) => {
-        if (response.kind !== KindEnum.OK) {
-          const { message } = response;
-          setError({ visible: true, message });
-          return;
-        }
+        if (response.kind === KindEnum.OK) {
+          const { result } = response;
+          const quantity = result[0]?.quantity || 0;
 
-        const { result } = response;
-        const quantity = result[0]?.quantity || 0;
+          console.log("request==>", result);
 
-        if (
-          statuses[index] === OrdersStatusEnum.OPEN ||
-          statuses[index] === OrdersStatusEnum.PROGRESS
-        ) {
-          setOpenOs(quantity);
-          return;
-        }
-
-        if (statuses[index] === OrdersStatusEnum.FINISHED) {
-          setFinishedOs(quantity);
+          if (statuses[index] === OrdersStatusEnum.OPEN) {
+            openQuantity = quantity;
+          } else if (statuses[index] === OrdersStatusEnum.PROGRESS) {
+            progressQuantity = quantity;
+          } else if (statuses[index] === OrdersStatusEnum.FINISHED) {
+            finishedQuantity = quantity;
+          }
         }
       });
+
+      setOpenOs(openQuantity);
+      setProgressOs(progressQuantity);
+      setFinishedOs(finishedQuantity);
     } finally {
       loadingProgressStore.setIsBusy(false);
     }
@@ -137,12 +137,15 @@ export const Home = observer(() => {
           </VStack>
 
           <VStack>
-            <Chart period={OrdersGroupingPeriodEnum.DAILY} />
+            <Chart
+              openQuantity={openOs}
+              progressQuantity={progressOs}
+              finishedQuantity={finishedOs}
+            />
           </VStack>
 
           <HStack style={{ gap: spacing.xs }}>
             <Card icon={<DownloadSvg />} quantity={openOs} title="OS Abertas" />
-
             <Card
               icon={<UploadSvg />}
               quantity={finishedOs}

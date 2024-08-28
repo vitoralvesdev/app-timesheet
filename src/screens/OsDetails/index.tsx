@@ -1,4 +1,4 @@
-import { VStack, Text, HStack } from "native-base";
+import { VStack, Text, HStack, ScrollView } from "native-base";
 import { spacing } from "@/theme";
 import {
   Button,
@@ -497,7 +497,11 @@ export const OsDetails: FC<OsDetailsProps> = observer(
     return (
       <>
         <Screen refreshing={false}>
-          <VStack flex={1}>{renderContainerLayout()}</VStack>
+          <ScrollView>
+            <VStack marginBottom={4} flex={1}>
+              {renderContainerLayout()}
+            </VStack>
+          </ScrollView>
         </Screen>
 
         <CustomModal
