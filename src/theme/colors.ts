@@ -34,5 +34,6 @@ export const THEME = extendTheme({
     },
     transparent: "rgba(0, 0, 0, 0)",
     linearGradientBg: ["#56415D", "#170D30"],
+    modal: "rgba(0, 0, 0, 0.5)",
   },
 });

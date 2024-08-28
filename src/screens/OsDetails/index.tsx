@@ -432,6 +432,8 @@ export const OsDetails: FC<OsDetailsProps> = observer(
           recordedLongitude: isCurrentLocation.recordedLongitude,
         };
 
+        console.log(params);
+
         const response = await ordersApi.endOrder(ordersStore.id, {
           ...params,
         });
@@ -489,7 +491,6 @@ export const OsDetails: FC<OsDetailsProps> = observer(
     useFocusEffect(
       useCallback(() => {
         fetchData().then();
-        console.log(isCurrentLocation.recordedLatitude);
       }, []),
     );
 

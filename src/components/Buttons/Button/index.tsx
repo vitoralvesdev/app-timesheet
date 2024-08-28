@@ -13,7 +13,7 @@ type props = {
   /**
    * An item to choose button layout
    */
-  preset?: "default" | "filter" | "error" | "google";
+  preset?: "default" | "error" | "google";
 
   /**
    * An item to show left icon
@@ -40,9 +40,9 @@ export const Button = ({
   ...rest
 }: props) => {
   const renderStyle = () => {
-    if (preset === "filter") {
-      return $filterStyle;
-    }
+    // if (preset === "filter") {
+    //   return $filterStyle;
+    // }
 
     if (preset === "google") {
       return $googleStyle;
@@ -65,14 +65,6 @@ export const Button = ({
       {...rest}
     >
       <TouchableOpacity onPress={onPress}>
-        {preset === "filter" ? (
-          <HStack alignItems="center">
-            {leftIcon ? <HStack mr={2}>{leftIcon}</HStack> : null}
-            <Text color="gray.300">{text}</Text>
-            {rightIcon ? <HStack ml={2}>{rightIcon}</HStack> : null}
-          </HStack>
-        ) : null}
-
         {!preset || preset === "default" ? (
           <HStack alignItems="center">
             {leftIcon ? <HStack mr={2}>{leftIcon}</HStack> : null}
@@ -105,12 +97,6 @@ const $baseStyle: ViewStyle = {
   backgroundColor: THEME.colors.purple[100],
   borderColor: THEME.colors.purple[100],
   borderRadius: 5,
-};
-
-const $filterStyle: ViewStyle = {
-  backgroundColor: THEME.colors.purple[400],
-  borderColor: THEME.colors.purple[400],
-  borderRadius: 12,
 };
 
 const $googleStyle: ViewStyle = {

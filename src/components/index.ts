@@ -8,6 +8,7 @@ import { Card } from "./Card/index";
 import { Chart } from "./Chart/index";
 import { Chip } from "./Chip/index";
 import { Clock } from "./Clock/index";
+import { ComboView } from "./ComboView";
 import { CurrentDate } from "./CurrentDate/index";
 import { CustomModal } from "@/components/Modals/CustomModal";
 import { HomeModal } from "@/components/Modals/HomeModal";
@@ -33,6 +34,7 @@ export {
   Chart,
   Chip,
   Clock,
+  ComboView,
   CurrentDate,
   CustomModal,
   HomeModal,

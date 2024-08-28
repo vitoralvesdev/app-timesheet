@@ -38,6 +38,9 @@ export const Home = observer(() => {
   const [openOs, setOpenOs] = useState(0);
   const [finishedOs, setFinishedOs] = useState(0);
 
+  const [orderGroupingPeriod, setOrderGroupingPeriod] =
+    useState<OrdersGroupingPeriodEnum>(OrdersGroupingPeriodEnum.DAILY);
+
   const onCloseModal = async () => {
     await setReadFromStorage();
   };
@@ -71,10 +74,12 @@ export const Home = observer(() => {
 
       const promises = statuses.map(async (status) => {
         const params: OrdersQuantityRequest = {
-          ...rangeDate(OrdersGroupingPeriodEnum.YEARLY),
-          groupingPeriod: OrdersGroupingPeriodEnum.DAILY,
+          ...rangeDate(orderGroupingPeriod),
+          groupingPeriod: orderGroupingPeriod,
           status,
         };
+
+        console.log("request==>", params);
 
         return await ordersApi.getOrdersQuantity({ ...params });
       });
@@ -112,7 +117,7 @@ export const Home = observer(() => {
     useCallback(() => {
       getReadFromStorage().then();
       fetchData().then();
-    }, []),
+    }, [orderGroupingPeriod]),
   );
 
   return (
@@ -124,7 +129,11 @@ export const Home = observer(() => {
           </VStack>
 
           <VStack style={{ marginBottom: spacing.md }}>
-            <Filter />
+            <Filter
+              onChange={(item) =>
+                setOrderGroupingPeriod(item.key as OrdersGroupingPeriodEnum)
+              }
+            />
           </VStack>
 
           <VStack>
