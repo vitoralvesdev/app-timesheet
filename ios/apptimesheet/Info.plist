@@ -31,10 +31,10 @@
 			</array>
 		</dict>
 	</array>
-	<key>GIDClientID</key>
-	<string>265481946936-pm6jqi2t9ob636jgqsm286ps278788vf.apps.googleusercontent.com</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>GIDClientID</key>
+	<string>265481946936-pm6jqi2t9ob636jgqsm286ps278788vf.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -44,6 +44,14 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Seu aplicativo precisa acessar sua localização sempre para fornecer melhores funcionalidades relacionadas à localização.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Seu aplicativo precisa acessar sua localização para fornecer melhores funcionalidades relacionadas à localização.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -70,9 +78,5 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Seu aplicativo precisa acessar sua localização para fornecer melhores funcionalidades relacionadas à localização.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Seu aplicativo precisa acessar sua localização sempre para fornecer melhores funcionalidades relacionadas à localização.</string>
 </dict>
 </plist>

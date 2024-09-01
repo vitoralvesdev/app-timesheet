@@ -46,6 +46,7 @@
     "plugins": [
       "expo-font",
       "@react-native-firebase/app",
+      "expo-notifications",
       [
         "expo-build-properties",
         {

@@ -17,6 +17,7 @@ import { Header } from "./Header/index";
 import { LoadingProgress } from "./LoadingProgress/index";
 import { NetworkState } from "./NetworkState/index";
 import { NoContent } from "./NoContent/index";
+import { Notify } from "@/components/Notify/index";
 import { Screen } from "./Screen/index";
 import { User } from "./User/index";
 import { UserPhoto } from "./UserPhoto/index";
@@ -43,6 +44,7 @@ export {
   LoadingProgress,
   NetworkState,
   NoContent,
+  Notify,
   Screen,
   User,
   UserPhoto,

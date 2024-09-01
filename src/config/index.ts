@@ -1,4 +1,3 @@
-const API_URL = "http://192.168.1.2:3000";
-const API_KEY = "vpevsp1hyhhf5d3cx508j6z8l76e6g"; // recuperar API key dinamicamente para cada usuario na hora de fazer login
+const API_URL = "http://192.168.1.9:3000";
 
-export default { API_URL, API_KEY };
+export default { API_URL };

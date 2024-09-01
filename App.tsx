@@ -7,13 +7,10 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { healthApi, KindEnum } from "@/services";
 import { CustomModal } from "@/components";
 import { useStores } from "@/stores";
-import registerNNPushToken from "native-notify";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  registerNNPushToken(23240, "QR59WlaeXHIa5mAbbog8ji");
-
   const [readApi, setReadApi] = useState(false);
   const [error, setError] = useState(false);
 

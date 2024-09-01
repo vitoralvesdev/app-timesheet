@@ -25,6 +25,7 @@ import { observer } from "mobx-react-lite";
 import { useStores } from "@/stores";
 import { StatusEnum } from "@/screens/Os";
 import { getTextFieldOnValidation } from "@/utils/validate";
+import { useNotify } from "@/components/Notify";
 
 interface IFormValues {
   companyName: string;
@@ -48,6 +49,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
       ordersStore,
       loadingProgressStore,
     } = useStores();
+    const sendPushNotification = useNotify();
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<{ visible: boolean; message: string }>({
@@ -361,13 +363,18 @@ export const OsDetails: FC<OsDetailsProps> = observer(
       navigation.navigate("Os");
     };
 
+    const onSuccess = () => {
+      setSuccess(!success);
+      goBack();
+    };
+
     const createOS = async () => {
       try {
         loadingProgressStore.setIsBusy(true);
 
         const params: OrderRequest = {
-          serviceDescription: getValues("serviceDescription"),
           companyName: getValues("companyName"),
+          serviceDescription: getValues("serviceDescription"),
           companyAddressLatitude: isCurrentLocation.recordedLatitude,
           companyAddressLongitude: isCurrentLocation.recordedLongitude,
           schedulingDate: "2024-08-23",
@@ -382,7 +389,10 @@ export const OsDetails: FC<OsDetailsProps> = observer(
         }
 
         if (response.kind === KindEnum.OK) {
-          // const { result } = response;
+          sendPushNotification({
+            title: "Nova Ordem de Serviço",
+            body: getValues("companyName"),
+          }).then();
 
           setSuccess(!success);
         }
@@ -508,7 +518,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
           visible={success}
           description="Apontamento efetuado"
           preset="success"
-          closeCallback={goBack}
+          closeCallback={onSuccess}
         />
 
         <CustomModal

@@ -1,19 +1,28 @@
 import { Box, Heading, Text, VStack } from "native-base";
-import { Button } from "@/components";
+import { Button, CustomModal } from "@/components";
 import {
   GoogleSignin,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import { useStores } from "src/stores";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BackgroundCircleLoginSvg,
   BackgroundCircleLoginTwoSvg,
   GoogleSvg,
 } from "@/svg";
+import { USERS } from "@/services/users/userApi";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const API_KEY = "APP_TIMESHEET_API_KEY";
 
 export const SignIn = () => {
   const { authenticationStore } = useStores();
+
+  const [error, setError] = useState<{ visible: boolean; message: string }>({
+    visible: false,
+    message: "",
+  });
 
   useEffect(() => {
     const loadData = async () => {
@@ -27,16 +36,40 @@ export const SignIn = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const res = await GoogleSignin.signIn();
+      const email = res.user.email;
 
-      if (res?.idToken) {
-        await authenticationStore.login(res);
+      const activeUser = USERS.find((user) => user.email === email);
+
+      if (activeUser) {
+        console.log("Usuário tem conta ativa:", activeUser);
+
+        if (res?.idToken) {
+          const jsonData = JSON.stringify(activeUser.apiKey);
+
+          await AsyncStorage.setItem(API_KEY, jsonData);
+          await authenticationStore.login(res);
+        }
+      } else {
+        setError({
+          visible: true,
+          message: "Usuário não possui uma conta ativa.",
+        });
+        console.error("Usuário não possui uma conta ativa.");
       }
     } catch (error) {
       switch (error.code) {
         case statusCodes.SIGN_IN_CANCELLED:
+          setError({
+            visible: true,
+            message: "O login do usuário é obrigatório",
+          });
           console.error("O login do usuário é obrigatório");
           break;
         case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+          setError({
+            visible: true,
+            message: "Os serviços do Google Play são necessários",
+          });
           console.error("Os serviços do Google Play são necessários");
           break;
       }
@@ -74,6 +107,13 @@ export const SignIn = () => {
         </Box>
       </VStack>
       {renderBackground()}
+
+      <CustomModal
+        visible={error.visible}
+        description={error.message}
+        preset="error"
+        cancelCallback={() => setError({ visible: false, message: "" })}
+      />
     </>
   );
 };

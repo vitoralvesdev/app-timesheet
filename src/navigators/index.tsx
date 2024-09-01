@@ -5,6 +5,7 @@ import { AuthRoutes } from "./auth.routes";
 import { useStores } from "src/stores";
 import { observer } from "mobx-react-lite";
 import { LoadingProgress, NetworkState } from "@/components";
+import { NotifyProvider } from "@/components/Notify";
 
 export interface NavigationProps
   extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
@@ -24,10 +25,12 @@ const Routes = observer((props: NavigationProps) => {
 
   return (
     <NavigationContainer theme={_THEME} {...props}>
-      {isAuthenticated ? <AppRoutes /> : <AuthRoutes />}
+      <NotifyProvider>
+        {isAuthenticated ? <AppRoutes /> : <AuthRoutes />}
 
-      <NetworkState />
-      <LoadingProgress />
+        <NetworkState />
+        <LoadingProgress />
+      </NotifyProvider>
     </NavigationContainer>
   );
 });

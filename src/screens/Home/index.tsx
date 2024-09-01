@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Box, HStack, VStack } from "native-base";
+import { Box, HStack, ScrollView, VStack } from "native-base";
 import {
   Card,
   Chart,
@@ -23,11 +23,13 @@ import {
   OrdersStatusEnum,
 } from "@/services";
 import { rangeDate } from "@/helpers/rangeDate";
+import { useNotify } from "@/components/Notify";
 
 const HAS_HOME_MODAL = "APP_TIMESHEET_HAS_HOME_MODAL";
 
 export const Home = observer(() => {
   const { loadingProgressStore } = useStores();
+  const sendPushNotification = useNotify();
 
   const [error, setError] = useState<{ visible: boolean; message: string }>({
     visible: false,
@@ -72,14 +74,17 @@ export const Home = observer(() => {
         OrdersStatusEnum.FINISHED,
       ];
 
+      const { startDate, endDate } = rangeDate(orderGroupingPeriod);
+
       const promises = statuses.map(async (status) => {
         const params: OrdersQuantityRequest = {
-          ...rangeDate(orderGroupingPeriod),
+          startDate,
+          endDate,
           groupingPeriod: orderGroupingPeriod,
           status,
         };
 
-        return await ordersApi.getOrdersQuantity({ ...params });
+        return await ordersApi.getOrdersQuantity(params);
       });
 
       const responses = await Promise.all(promises);
@@ -117,11 +122,16 @@ export const Home = observer(() => {
     useCallback(() => {
       getReadFromStorage().then();
       fetchData().then();
+
+      sendPushNotification({
+        title: "teste",
+        body: "teste",
+      });
     }, [orderGroupingPeriod]),
   );
 
   return (
-    <>
+    <ScrollView>
       <Screen refreshing={false}>
         <Box flex={1} margin={5}>
           <VStack style={{ marginBottom: spacing.lg }}>
@@ -163,6 +173,6 @@ export const Home = observer(() => {
         preset="error"
         cancelCallback={() => setError({ visible: false, message: "" })}
       />
-    </>
+    </ScrollView>
   );
 });

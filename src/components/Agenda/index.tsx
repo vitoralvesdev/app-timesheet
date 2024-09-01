@@ -39,11 +39,7 @@ export const Agenda = ({ data, onDayPress }: AgendaProps) => {
   LocaleConfig.defaultLocale = "pt";
 
   const formatItems = (items: OrderResponse[]) => {
-    const finishedItems = items.filter(
-      (item) => item.status === OrdersStatusEnum.FINISHED,
-    );
-
-    const groupedData = finishedItems.reduce((acc, item) => {
+    const groupedData = items.reduce((acc, item) => {
       const { createdAt, companyName, endComment, totalHours } = item;
 
       const hours = `${totalHours.hours}:${totalHours.minutes}:${totalHours.seconds}`;
@@ -126,6 +122,7 @@ export const Agenda = ({ data, onDayPress }: AgendaProps) => {
       />
       {formatItems(data).length === 0 ? renderNoContent() : null}
       <AgendaList
+        keyExtractor={(item) => item.id}
         sections={formatItems(data)}
         renderSectionHeader={(item) => renderSectionHeader(item as string)}
         renderItem={(item) => renderItem(item)}

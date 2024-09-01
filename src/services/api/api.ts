@@ -8,6 +8,9 @@
 import { ApisauceInstance, create } from "apisauce";
 import Config from "../../config";
 import type { ApiConfig } from "@/services";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const API_KEY = "APP_TIMESHEET_API_KEY";
 
 /**
  * Configuring the apisauce instance.
@@ -35,9 +38,23 @@ export class Api {
       timeout: this.config.timeout,
       headers: {
         Accept: "application/json",
-        "X-API-KEY": Config.API_KEY,
       },
     });
+
+    this.apisauce.axiosInstance.interceptors.request.use(
+      async (config) => {
+        const apiKey = (await AsyncStorage.getItem(API_KEY)) || {};
+
+        if (apiKey) {
+          config.headers["X-API-KEY"] = JSON.parse(apiKey.toString());
+        }
+
+        return config;
+      },
+      (error) => {
+        Promise.reject(error);
+      },
+    );
   }
 }
 
