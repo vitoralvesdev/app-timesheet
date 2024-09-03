@@ -6,7 +6,6 @@ export const OrdersStoreModel = types
   .model("OrdersStore")
   .props({
     id: "",
-    selectedDay: "",
   })
   .actions(withSetPropAction)
   .views((store) => ({}))

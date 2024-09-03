@@ -14,7 +14,7 @@ export const Chart = ({
   progressQuantity,
   finishedQuantity,
 }: ChartProps) => {
-  const [data, setData] = useState([]);
+  const [data] = useState([]);
 
   const formatData = (
     openQuantity: number = 0,
@@ -29,7 +29,7 @@ export const Chart = ({
         barBorderTopLeftRadius: 8,
         barBorderTopRightRadius: 8,
         frontColor: THEME.colors.purple[500],
-        spacing: spacing.lg,
+        spacing: spacing.xs,
         verticalLinesSpacing: 1,
         labelWidth: 50,
         labelTextStyle: {
@@ -106,7 +106,7 @@ export const Chart = ({
           yAxisTextStyle={{ color: THEME.colors.gray[400] }}
           xAxisType={"dashed"}
           xAxisColor={"lightgray"}
-          width={Dimensions.get("window").width}
+          // width={Dimensions.get("window").width}
         />
       ) : null}
     </>

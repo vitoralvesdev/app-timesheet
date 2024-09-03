@@ -1,14 +1,19 @@
 import { Agenda, Screen } from "@/components";
 import { observer } from "mobx-react-lite";
-import { useCallback, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { KindEnum, ordersApi, OrdersRequest } from "@/services";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
+import { useFocusEffect } from "@react-navigation/native";
+import {
+  AppStackScreenProps,
+  ContainerLayoutOsDetailsEnum,
+} from "@/navigators/app.routes";
 import { useStores } from "@/stores";
 import { DateData } from "react-native-calendars";
 
-export const History = observer(() => {
-  const navigation = useNavigation<AppNavigatorRoutesProps>();
+interface HistoryProps extends AppStackScreenProps<"History"> {}
+
+export const History: FC<HistoryProps> = observer(function History(_props) {
+  const navigation = _props.navigation;
   const { ordersStore, loadingProgressStore } = useStores();
 
   const [orders, setOrders] = useState([]);
@@ -36,9 +41,11 @@ export const History = observer(() => {
 
   const goOsDetails = (data: DateData) => {
     ordersStore.setProp("id", "");
-    ordersStore.setProp("selectedDay", data.dateString);
 
-    navigation.navigate("OsDetails");
+    navigation.navigate("OsDetails", {
+      containerLayout: ContainerLayoutOsDetailsEnum.Create,
+      schedulingDate: data.dateString,
+    });
   };
 
   useFocusEffect(

@@ -1,20 +1,23 @@
-import { HStack, VStack, Text, ScrollView } from "native-base";
+import { HStack, ScrollView, Text, VStack } from "native-base";
 import { spacing } from "@/theme";
 import {
   Chip,
   Header,
+  NoContent,
+  Screen,
   TextField,
   ToggleGroup,
-  Screen,
-  NoContent,
 } from "@/components";
 import { Controller, useForm } from "react-hook-form";
 import { SearchSvg } from "@/svg";
-import { useCallback, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { observer } from "mobx-react-lite";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { AppNavigatorRoutesProps } from "@/navigators/app.routes";
+import { useFocusEffect } from "@react-navigation/native";
+import {
+  AppStackScreenProps,
+  ContainerLayoutOsDetailsEnum,
+} from "@/navigators/app.routes";
 import {
   KindEnum,
   OrderResponse,
@@ -24,7 +27,7 @@ import {
 } from "@/services";
 import { useStores } from "@/stores";
 
-type OsProps = {
+type OrderProps = {
   companyName: string;
   serviceDescription: string;
   status: string;
@@ -46,8 +49,10 @@ export const StatusLabel = new Map([
   ["IN_PROGRESS", "Andamento"],
 ]);
 
-export const Os = observer(() => {
-  const navigation = useNavigation<AppNavigatorRoutesProps>();
+interface OsProps extends AppStackScreenProps<"OsDetails"> {}
+
+export const Os: FC<OsProps> = observer(function Os(_props) {
+  const navigation = _props.navigation;
   const { ordersStore, loadingProgressStore } = useStores();
 
   const [search, setSearch] = useState("");
@@ -60,7 +65,7 @@ export const Os = observer(() => {
     mode: "onChange",
   });
 
-  const filterStatus = (item: OsProps) => {
+  const filterStatus = (item: OrderProps) => {
     const { status } = item;
 
     if (toggle === StatusLabel.get(StatusEnum.All)) {
@@ -75,7 +80,7 @@ export const Os = observer(() => {
     );
   };
 
-  const filterItems = (item: OsProps) => {
+  const filterItems = (item: OrderProps) => {
     if (!search) {
       return item;
     }
@@ -111,13 +116,21 @@ export const Os = observer(() => {
     }
   };
 
-  const goOsDetails = (item?: OrderResponse) => {
-    if (item) {
-      ordersStore.setProp("id", item.id);
-      ordersStore.setProp("selectedDay", "");
+  const goOsDetails = (item: OrderResponse) => {
+    ordersStore.setProp("id", item.id);
+
+    if (item.status === OrdersStatusEnum.OPEN) {
+      navigation.navigate("OsDetails", {
+        containerLayout: ContainerLayoutOsDetailsEnum.Start,
+      });
     }
 
-    navigation.navigate("OsDetails");
+    if (item.status === OrdersStatusEnum.PROGRESS) {
+      navigation.navigate("OsDetails", {
+        containerLayout: ContainerLayoutOsDetailsEnum.Finish,
+      });
+      return;
+    }
   };
 
   useFocusEffect(

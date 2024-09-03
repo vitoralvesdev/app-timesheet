@@ -1,19 +1,21 @@
-import { VStack, Text, HStack, ScrollView } from "native-base";
-import { spacing } from "@/theme";
+import { HStack, ScrollView, Text, VStack } from "native-base";
 import {
   Button,
   ButtonBack,
   Clock,
+  CurrentDate,
   CustomModal,
   Header,
   TextField,
   Screen,
-  CurrentDate,
 } from "@/components";
 import { useFocusEffect } from "@react-navigation/native";
-import { AppStackScreenProps } from "@/navigators/app.routes";
+import {
+  AppStackScreenProps,
+  ContainerLayoutOsDetailsEnum,
+} from "@/navigators/app.routes";
 import React, { FC, useCallback, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   KindEnum,
   OrderRequest,
@@ -23,9 +25,9 @@ import {
 } from "@/services";
 import { observer } from "mobx-react-lite";
 import { useStores } from "@/stores";
-import { StatusEnum } from "@/screens/Os";
-import { getTextFieldOnValidation } from "@/utils/validate";
 import { useNotify } from "@/components/Notify";
+import { spacing } from "@/theme";
+import { getTextFieldOnValidation } from "@/utils/validate";
 
 interface IFormValues {
   companyName: string;
@@ -33,17 +35,13 @@ interface IFormValues {
   comment: string;
 }
 
-export enum ContainerLayoutOsDetailsEnum {
-  Create = 0,
-  Start = 1,
-  Finish = 2,
-}
-
 interface OsDetailsProps extends AppStackScreenProps<"OsDetails"> {}
 
 export const OsDetails: FC<OsDetailsProps> = observer(
   function OsDetails(_props) {
     const navigation = _props.navigation;
+    const { containerLayout, schedulingDate } = _props.route.params;
+
     const {
       authenticationStore: { isCurrentLocation },
       ordersStore,
@@ -51,25 +49,26 @@ export const OsDetails: FC<OsDetailsProps> = observer(
     } = useStores();
     const sendPushNotification = useNotify();
 
+    const [startTime, setStartTime] = useState<Date>(null);
+    const [endTime, setEndTime] = useState<Date>(null);
+    const [order, setOrder] = useState<OrderResponse>(null);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<{ visible: boolean; message: string }>({
       visible: false,
       message: "",
     });
-    const [containerLayout, setContainerLayout] =
-      useState<ContainerLayoutOsDetailsEnum>(
-        ContainerLayoutOsDetailsEnum.Create,
-      );
-    const [startTime, setStartTime] = useState<Date>(null);
-    const [endTime, setEndTime] = useState<Date>(null);
-    const [order, setOrder] = useState<OrderResponse>(null);
 
     const {
       control,
       formState: { errors, isValid },
-      getValues,
+      handleSubmit,
     } = useForm<IFormValues>({
       mode: "onChange",
+      defaultValues: {
+        companyName: "",
+        serviceDescription: "",
+        comment: "",
+      },
     });
 
     const containerLayoutCreate = () => {
@@ -121,7 +120,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
             </Text>
 
             <HStack mb={spacing.xs}>
-              <CurrentDate date={ordersStore.selectedDay} />
+              <CurrentDate date={schedulingDate || ""} />
             </HStack>
           </VStack>
 
@@ -170,7 +169,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
           <VStack marginX={5}>
             <Button
               text="Criar OS"
-              onPress={() => createOS().then()}
+              onPress={handleSubmit(onSubmit)}
               isDisabled={!isValid}
             />
           </VStack>
@@ -203,7 +202,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
                 name="companyName"
                 control={control}
                 render={() => (
-                  <TextField value={order.companyName} isDisabled />
+                  <TextField value={order?.companyName} isDisabled />
                 )}
               />
             </HStack>
@@ -226,7 +225,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
                 render={() => (
                   <TextField
                     placeholder="Problema resolvido"
-                    value={order.serviceDescription}
+                    value={order?.serviceDescription}
                     numberOfLines={3}
                     blurOnSubmit={true}
                     isDisabled
@@ -248,14 +247,14 @@ export const OsDetails: FC<OsDetailsProps> = observer(
 
             <VStack mb={spacing.xs}>
               <Clock
-                currentTime={order.createdAt}
+                currentTime={order?.schedulingDate as Date}
                 onChange={(time) => setStartTime(time)}
               />
             </VStack>
           </VStack>
 
           <VStack marginX={5}>
-            <Button text="Iniciar OS" onPress={() => startOS().then()} />
+            <Button text="Iniciar OS" onPress={handleSubmit(onSubmit)} />
           </VStack>
         </>
       );
@@ -335,30 +334,18 @@ export const OsDetails: FC<OsDetailsProps> = observer(
           </VStack>
 
           <VStack marginX={5}>
-            <Button text="Finalizar OS" onPress={() => endOS().then()} />
+            <Button text="Finalizar OS" onPress={handleSubmit(onSubmit)} />
           </VStack>
         </>
       );
     };
 
-    const renderContainerLayout = () => {
-      switch (containerLayout) {
-        case ContainerLayoutOsDetailsEnum.Create:
-          return containerLayoutCreate();
-        case ContainerLayoutOsDetailsEnum.Start:
-          return containerLayoutStart();
-        case ContainerLayoutOsDetailsEnum.Finish:
-          return containerLayoutFinish();
-        default:
-          return null;
-      }
-    };
-
     const goBack = () => {
-      if (ordersStore.selectedDay) {
-        navigation.navigate("History");
-        return;
-      }
+      // if (ordersStore.selectedDay) {
+      //   navigation.navigate("History");
+      //   return;
+      // }
+      //
 
       navigation.navigate("Os");
     };
@@ -368,16 +355,16 @@ export const OsDetails: FC<OsDetailsProps> = observer(
       goBack();
     };
 
-    const createOS = async () => {
+    const createOS = async (data: IFormValues) => {
       try {
         loadingProgressStore.setIsBusy(true);
 
         const params: OrderRequest = {
-          companyName: getValues("companyName"),
-          serviceDescription: getValues("serviceDescription"),
+          companyName: data.companyName,
+          serviceDescription: data.serviceDescription,
           companyAddressLatitude: isCurrentLocation.recordedLatitude,
           companyAddressLongitude: isCurrentLocation.recordedLongitude,
-          schedulingDate: "2024-08-23",
+          schedulingDate: schedulingDate,
         };
 
         const response = await ordersApi.createOrder({ ...params });
@@ -391,7 +378,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
         if (response.kind === KindEnum.OK) {
           sendPushNotification({
             title: "Nova Ordem de Serviço",
-            body: getValues("companyName"),
+            body: data.companyName,
           }).then();
 
           setSuccess(!success);
@@ -411,8 +398,6 @@ export const OsDetails: FC<OsDetailsProps> = observer(
           recordedLongitude: isCurrentLocation.recordedLongitude,
         };
 
-        console.log(params);
-
         const response = await ordersApi.startOrder(ordersStore.id, {
           ...params,
         });
@@ -431,18 +416,16 @@ export const OsDetails: FC<OsDetailsProps> = observer(
       }
     };
 
-    const endOS = async () => {
+    const endOS = async (data: IFormValues) => {
       try {
         loadingProgressStore.setIsBusy(true);
 
         const params: OrderUpdateRequest = {
           endDatetime: endTime,
-          comment: getValues("comment"),
+          comment: data.comment,
           recordedLatitude: isCurrentLocation.recordedLatitude,
           recordedLongitude: isCurrentLocation.recordedLongitude,
         };
-
-        console.log(params);
 
         const response = await ordersApi.endOrder(ordersStore.id, {
           ...params,
@@ -473,35 +456,46 @@ export const OsDetails: FC<OsDetailsProps> = observer(
         const response = await ordersApi.getOrder({ ...params });
 
         if (response.kind !== KindEnum.OK) {
-          setContainerLayout(ContainerLayoutOsDetailsEnum.Create);
+          setError({
+            visible: true,
+            message: "Erro ao carregar Ordem de Serviço",
+          });
         }
 
         if (response.kind === KindEnum.OK) {
           const { result } = response;
 
           setOrder(result);
-
-          switch (result.status) {
-            case StatusEnum.Open:
-              setContainerLayout(ContainerLayoutOsDetailsEnum.Start);
-              break;
-            case StatusEnum.Progress:
-              setContainerLayout(ContainerLayoutOsDetailsEnum.Finish);
-              break;
-            default:
-              setContainerLayout(ContainerLayoutOsDetailsEnum.Create);
-              break;
-          }
         }
       } finally {
         loadingProgressStore.setIsBusy(false);
       }
     };
 
+    const onSubmit: SubmitHandler<IFormValues> = async (data: IFormValues) => {
+      console.log("form==>", data);
+
+      if (containerLayout === ContainerLayoutOsDetailsEnum.Create) {
+        createOS(data).then();
+        return;
+      }
+
+      if (containerLayout === ContainerLayoutOsDetailsEnum.Start) {
+        startOS().then();
+        return;
+      }
+
+      if (containerLayout === ContainerLayoutOsDetailsEnum.Finish) {
+        endOS(data).then();
+      }
+    };
+
     useFocusEffect(
       useCallback(() => {
-        fetchData().then();
-      }, []),
+        if (containerLayout !== ContainerLayoutOsDetailsEnum.Create) {
+          fetchData().then();
+        }
+      }, [containerLayout]),
     );
 
     return (
@@ -509,7 +503,17 @@ export const OsDetails: FC<OsDetailsProps> = observer(
         <Screen refreshing={false}>
           <ScrollView>
             <VStack marginBottom={4} flex={1}>
-              {renderContainerLayout()}
+              {containerLayout === ContainerLayoutOsDetailsEnum.Create
+                ? containerLayoutCreate()
+                : null}
+
+              {containerLayout === ContainerLayoutOsDetailsEnum.Start
+                ? containerLayoutStart()
+                : null}
+
+              {containerLayout === ContainerLayoutOsDetailsEnum.Finish
+                ? containerLayoutFinish()
+                : null}
             </VStack>
           </ScrollView>
         </Screen>

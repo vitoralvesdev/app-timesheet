@@ -16,11 +16,20 @@ import { ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
+export enum ContainerLayoutOsDetailsEnum {
+  Create = 0,
+  Start = 1,
+  Finish = 2,
+}
+
 type AppRoutesProps = {
   Home: undefined;
   History: undefined;
   Os: undefined;
-  OsDetails: undefined;
+  OsDetails: {
+    containerLayout: ContainerLayoutOsDetailsEnum;
+    schedulingDate?: string;
+  };
   Notifications: undefined;
 };
 

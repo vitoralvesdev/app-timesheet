@@ -29,7 +29,6 @@ const HAS_HOME_MODAL = "APP_TIMESHEET_HAS_HOME_MODAL";
 
 export const Home = observer(() => {
   const { loadingProgressStore } = useStores();
-  const sendPushNotification = useNotify();
 
   const [error, setError] = useState<{ visible: boolean; message: string }>({
     visible: false,
@@ -122,11 +121,6 @@ export const Home = observer(() => {
     useCallback(() => {
       getReadFromStorage().then();
       fetchData().then();
-
-      sendPushNotification({
-        title: "teste",
-        body: "teste",
-      });
     }, [orderGroupingPeriod]),
   );
 
@@ -146,7 +140,7 @@ export const Home = observer(() => {
             />
           </VStack>
 
-          <VStack>
+          <VStack marginBottom={spacing.xs}>
             <Chart
               openQuantity={openOs}
               progressQuantity={progressOs}

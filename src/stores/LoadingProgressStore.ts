@@ -1,7 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
 import { withSetPropAction } from "@/stores/helpers/withSetPropAction";
 
-export const LoadingProgressModel = types
+export const LoadingProgressStoreModel = types
   .model("LoadingProgressStore")
   .props({
     busy: false,
@@ -19,10 +19,10 @@ export const LoadingProgressModel = types
   }));
 
 export interface LoadingProgressStore
-  extends Instance<typeof LoadingProgressModel> {}
+  extends Instance<typeof LoadingProgressStoreModel> {}
 
 export interface LoadingProgressStoreSnapshotOut
-  extends SnapshotOut<typeof LoadingProgressModel> {}
+  extends SnapshotOut<typeof LoadingProgressStoreModel> {}
 
 export interface LoadingProgressStoreSnapshotIn
-  extends SnapshotIn<typeof LoadingProgressModel> {}
+  extends SnapshotIn<typeof LoadingProgressStoreModel> {}
