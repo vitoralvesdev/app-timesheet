@@ -42,7 +42,7 @@ export const Agenda = ({ data, onDayPress }: AgendaProps) => {
     const groupedData = items.reduce((acc, item) => {
       const { createdAt, companyName, endComment, totalHours } = item;
 
-      const hours = `${totalHours.hours}:${totalHours.minutes}:${totalHours.seconds}`;
+      const hours = `${totalHours.hours}h ${totalHours.minutes}m`;
 
       if (acc[createdAt]) {
         acc[createdAt].push({ name: companyName, comment: endComment, hours });

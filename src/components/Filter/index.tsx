@@ -7,8 +7,8 @@ import { OrdersGroupingPeriodEnum } from "@/services";
 
 const PERIODS = [
   { key: OrdersGroupingPeriodEnum.DAILY, value: "Diário" },
-  { key: OrdersGroupingPeriodEnum.MONTHLY, value: "Mensal" },
   { key: OrdersGroupingPeriodEnum.WEEKLY, value: "Semanal" },
+  { key: OrdersGroupingPeriodEnum.MONTHLY, value: "Mensal" },
   { key: OrdersGroupingPeriodEnum.YEARLY, value: "Anual" },
 ];
 

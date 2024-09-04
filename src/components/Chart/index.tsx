@@ -101,7 +101,7 @@ export const Chart = ({
           initialSpacing={10}
           adjustToWidth={true}
           yAxisThickness={0}
-          maxValue={Math.max(...data.map((d) => d.value), 10)}
+          maxValue={Math.max(...data.map((d) => d.value), 30)}
           stepValue={10}
           yAxisTextStyle={{ color: THEME.colors.gray[400] }}
           xAxisType={"dashed"}

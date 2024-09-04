@@ -6,6 +6,7 @@ import { TouchableOpacity } from "react-native";
 import { observer } from "mobx-react-lite";
 import {
   KindEnum,
+  OrderResponse,
   ordersApi,
   OrdersRequest,
   OrdersStatusEnum,
@@ -22,12 +23,15 @@ interface NotificationsProps extends AppStackScreenProps<"Notifications"> {}
 export const Notifications: FC<NotificationsProps> = observer(
   function Notifications(_props) {
     const navigation = _props.navigation;
+    const { ordersStore } = useStores();
 
     const { loadingProgressStore } = useStores();
 
     const [notifications, setNotifications] = useState([]);
 
-    const goOsDetails = () => {
+    const goOsDetails = (item: OrderResponse) => {
+      ordersStore.setProp("id", item.id);
+
       navigation.navigate("OsDetails", {
         containerLayout: ContainerLayoutOsDetailsEnum.Finish,
       });
@@ -70,6 +74,12 @@ export const Notifications: FC<NotificationsProps> = observer(
           <Header title="Notificações" />
         </VStack>
 
+        <VStack alignSelf="center" marginY={spacing.xxs}>
+          <Text color="gray.400">
+            Existem tarefas que precisam ser finalizadas.
+          </Text>
+        </VStack>
+
         <ScrollView>
           {notifications.map((item, index) => (
             <TouchableOpacity key={index}>
@@ -86,7 +96,9 @@ export const Notifications: FC<NotificationsProps> = observer(
                         >
                           {item.companyName}
                         </Text>
-                        <Text color="gray.100">{item.totalHours.hours}h</Text>
+                        <Text color="gray.100">
+                          {item.totalHours.hours}h {item.totalHours.minutes}m
+                        </Text>
                       </>
                     ) : null}
                   </HStack>
@@ -98,13 +110,18 @@ export const Notifications: FC<NotificationsProps> = observer(
                       </Text>
 
                       {!item.companyName ? (
-                        <Text color="gray.100">{item.totalHours.hours}h</Text>
+                        <Text color="gray.100">
+                          {item.totalHours.hours}h {item.totalHours.minutes}m
+                        </Text>
                       ) : null}
                     </HStack>
 
                     {item.status === OrdersStatusEnum.PROGRESS ? (
                       <VStack width={"25%"}>
-                        <Button text="Finalizar" onPress={goOsDetails} />
+                        <Button
+                          text="Finalizar"
+                          onPress={() => goOsDetails(item)}
+                        />
                       </VStack>
                     ) : null}
                   </VStack>

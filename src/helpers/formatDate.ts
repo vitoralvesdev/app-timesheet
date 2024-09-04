@@ -6,7 +6,9 @@ const dateToText = (date: string, f?: string): string => {
     return "";
   }
 
-  return format(date, f ?? "dd MMMM yyyy", {
+  const dateObj = parseISO(date);
+
+  return format(dateObj, f ?? "dd MMMM yyyy", {
     locale: ptBR,
   });
 };

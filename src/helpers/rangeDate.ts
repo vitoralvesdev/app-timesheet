@@ -29,7 +29,7 @@ export const rangeDate = (
   }
 
   return {
-    startDate: dateToText(startDate.toString(), "yyyy-MM-dd"),
-    endDate: dateToText(endDate.toString(), "yyyy-MM-dd"),
+    startDate: startDate.toISOString().split("T")[0],
+    endDate: endDate.toISOString().split("T")[0],
   };
 };

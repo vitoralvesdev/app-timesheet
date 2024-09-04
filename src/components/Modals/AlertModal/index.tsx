@@ -23,21 +23,16 @@ export const AlertModal = ({
 
   return (
     <AlertDialog
-      leastDestructiveRef={cancelRef}
       isOpen={visible}
       onClose={closeCallback}
+      leastDestructiveRef={cancelRef}
     >
       <AlertDialog.Content>
         <AlertDialog.Header style={$header}>{title}</AlertDialog.Header>
         <AlertDialog.Body style={$header}>{subTitle}</AlertDialog.Body>
 
         <HStack style={$footer}>
-          <Button
-            preset="google"
-            text="Cancelar"
-            ref={cancelRef}
-            onPress={closeCallback}
-          />
+          <Button preset="google" text="Cancelar" onPress={closeCallback} />
 
           <Button
             preset="google"

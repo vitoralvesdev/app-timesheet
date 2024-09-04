@@ -247,7 +247,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
 
             <VStack mb={spacing.xs}>
               <Clock
-                currentTime={order?.schedulingDate as Date}
+                currentTime={order?.createdAt as Date}
                 onChange={(time) => setStartTime(time)}
               />
             </VStack>
@@ -285,7 +285,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
                 name="companyName"
                 control={control}
                 render={() => (
-                  <TextField value={order.companyName} isDisabled />
+                  <TextField value={order?.companyName} isDisabled />
                 )}
               />
             </HStack>
@@ -377,6 +377,7 @@ export const OsDetails: FC<OsDetailsProps> = observer(
 
         if (response.kind === KindEnum.OK) {
           sendPushNotification({
+            sound: "default",
             title: "Nova Ordem de Serviço",
             body: data.companyName,
           }).then();

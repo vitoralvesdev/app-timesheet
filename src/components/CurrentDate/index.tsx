@@ -8,10 +8,11 @@ interface CurrentDateProps {
   date: string;
 }
 export const CurrentDate = ({ date }: CurrentDateProps) => {
+  console.log(date);
   return (
     <Box style={$baseStyle}>
       <Text color="gray.300" fontSize={spacing.xl}>
-        {dateToText(date.toString(), "dd MMMM yyyy")}
+        {dateToText(date.toString())}
       </Text>
     </Box>
   );
